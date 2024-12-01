@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../models/week.dart';
 import '../../../../providers/preoperacional_db_provider.dart';
@@ -115,6 +116,12 @@ class DayWeek extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+
+    if (uid == null) {
+      return Text('No hay un usuario autenticado.');
+    }
+
     return GestureDetector(
       onTap: () {
         ref.read(preoperacionalDbProvider.notifier).updateDayOfWeek(
@@ -122,6 +129,7 @@ class DayWeek extends ConsumerWidget {
               subCategoryKey,
               dayValue,
               nextBoolDay(isMarked),
+              uid,
             );
       },
       child: CircleAvatar(

@@ -1,14 +1,16 @@
 import 'package:eva/models/week.dart';
+import 'package:eva/providers/current_user_provider.dart';
 import 'package:eva/providers/new_preoperacional_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SubCategoryItem extends StatelessWidget {
   final String categoryKey;
   final String subCategoryKey;
   final Week week;
 
-  const SubCategoryItem({
+   const SubCategoryItem({
     super.key,
     required this.categoryKey,
     required this.subCategoryKey,
@@ -114,6 +116,12 @@ class DayWeek extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+
+    if (uid == null) {
+      return Text('No hay un usuario autenticado.');
+    }
+
     return GestureDetector(
       onTap: () {
         ref.read(newPreoperacionalProvider.notifier).updateDayOfWeek(
@@ -121,6 +129,7 @@ class DayWeek extends ConsumerWidget {
               subCategoryKey,
               dayValue,
               nextBoolDay(isMarked),
+              uid,
             );
       },
       child: CircleAvatar(

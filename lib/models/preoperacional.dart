@@ -16,6 +16,7 @@ class Preoperacional {
   final String fechaFinal;
   final int kilometrajeInit;
   final int kilometrajeFinal;
+  final Map<String, String> modifiedBy; // Nuevo campo
 
   Preoperacional({
     this.docId = '',
@@ -30,6 +31,7 @@ class Preoperacional {
     required this.userId,
     this.kilometrajeFinal = 0,
     this.observaciones = '', // Inicialización del campo
+    this.modifiedBy = const {}, // Inicialización del nuevo campo
   });
 
   Preoperacional copyWith({
@@ -45,6 +47,7 @@ class Preoperacional {
     String? fechaInit,
     String? fechaFinal,
     String? userId,
+    Map<String, String>? modifiedBy,
   }) {
     return Preoperacional(
       carId: carId ?? this.carId,
@@ -60,6 +63,7 @@ class Preoperacional {
       fechaInit: fechaInit ?? this.fechaInit,
       fechaFinal: fechaFinal ?? this.fechaFinal,
       userId: userId ?? this.userId,
+      modifiedBy: modifiedBy ?? this.modifiedBy,
     );
   }
 
@@ -86,6 +90,7 @@ class Preoperacional {
       'kilometrajeFinal': kilometrajeFinal,
       'fechaInit': fechaInit,
       'fechaFinal': fechaFinal,
+      'modifiedBy': modifiedBy, // Incluir en el mapa
     };
   }
 
@@ -109,6 +114,7 @@ class Preoperacional {
       fechaInit: map['fechaInit'] ?? '',
       fechaFinal: map['fechaFinal'] ?? '',
       userId: map['userId'] ?? '',
+      modifiedBy: Map<String, String>.from(map['modifiedBy'] ?? {}),
     );
   }
 
@@ -137,7 +143,8 @@ class Preoperacional {
         other.kilometrajeInit == kilometrajeInit &&
         other.kilometrajeFinal == kilometrajeFinal &&
         other.fechaInit == fechaInit &&
-        other.fechaFinal == fechaFinal;
+        other.fechaFinal == fechaFinal &&
+        other.modifiedBy == modifiedBy;
   }
 
   @override
@@ -152,6 +159,7 @@ class Preoperacional {
         kilometrajeInit.hashCode ^
         kilometrajeFinal.hashCode ^
         fechaInit.hashCode ^
-        fechaFinal.hashCode;
+        fechaFinal.hashCode ^
+        modifiedBy.hashCode;
   }
 }

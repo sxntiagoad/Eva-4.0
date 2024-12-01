@@ -18,6 +18,7 @@ class PreoperacionalNotifier extends StateNotifier<Preoperacional> {
           kilometrajeFinal: 0,
           fechaInit: '',
           fechaFinal: '',
+          modifiedBy: {},
           userId: FirebaseAuth.instance.currentUser?.uid ?? '', // Modificado aquí
         ));
 
@@ -78,6 +79,7 @@ class PreoperacionalNotifier extends StateNotifier<Preoperacional> {
     String subCategory,
     String day,
     bool? value,
+    String userId,
   ) {
     final updatedInspecciones = Map<String, Map<String, Week>>.from(
       state.inspecciones,
@@ -103,8 +105,14 @@ class PreoperacionalNotifier extends StateNotifier<Preoperacional> {
 
       if (updatedWeek != null) {
         updatedInspecciones[category]![subCategory] = updatedWeek;
+
+        // Actualizar el mapa modifiedBy en el nivel del documento
+        final updatedModifiedBy = Map<String, String>.from(state.modifiedBy);
+        updatedModifiedBy[day] = userId;
+
         state = state.copyWith(
           inspecciones: updatedInspecciones,
+          modifiedBy: updatedModifiedBy,
         );
       }
     }
