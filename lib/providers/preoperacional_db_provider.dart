@@ -1,6 +1,7 @@
 import 'package:eva/models/format_inspecciones.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Añade esta importación
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/preoperacional.dart';
 import '../models/week.dart';
@@ -20,6 +21,7 @@ class PreoperacionalDbNotifier extends StateNotifier<Preoperacional> {
           fechaFinal: '',
           userId: FirebaseAuth.instance.currentUser?.uid ?? '',
           modifiedBy: {},
+          relevantes: [],
         ));
 
   // Actualiza el carId
@@ -84,6 +86,28 @@ class PreoperacionalDbNotifier extends StateNotifier<Preoperacional> {
     state = state.copyWith(fechaFinal: newFechaFinal);
   }
 
+  // Método para actualizar el campo 'relevantes'
+  void updateRelevantes(List<String> newRelevantes) {
+    state = state.copyWith(relevantes: newRelevantes);
+  }
+
+  // Future<void> _syncWithFirebase() async {
+  //   if (state.docId != null) {
+  //     try {
+  //       await FirebaseFirestore.instance
+  //           .collection('preoperacionales')
+  //           .doc(state.docId)
+  //           .update({
+  //         'relevantes': state.relevantes,
+  //       });
+  //       print('✅ Relevantes actualizados en Firebase');
+  //     } catch (e) {
+  //       print('❌ Error al actualizar relevantes en Firebase: $e');
+  //     }
+  //   } else {
+  //     print('❌ No se puede actualizar: docId es null');
+  //   }
+  // }
 
   void updateFechas(bool isOpen) {
     final now = _getCurrentDateAsString();
@@ -146,15 +170,26 @@ class PreoperacionalDbNotifier extends StateNotifier<Preoperacional> {
   // Reemplaza el preoperacional completo (incluyendo observaciones)
   void replacePreoperacional(Preoperacional newPreoperacional) {
     state = newPreoperacional.copyWith(
-      observaciones: newPreoperacional.observaciones, // Asegurar que se copien las observaciones
+      observaciones: newPreoperacional
+          .observaciones, // Asegurar que se copien las observaciones
       userId: state.userId, // Mantén el userId original
     );
+  }
+
+  // Método para añadir un UID al campo 'relevantes'
+  void addRelevante(String userId) {
+    final updatedRelevantes = List<String>.from(state.relevantes);
+    if (!updatedRelevantes.contains(userId)) {
+      updatedRelevantes.add(userId);
+      state = state.copyWith(relevantes: updatedRelevantes);
+    }
   }
 }
 
 // Proveedor de estado para Preoperacional
 final preoperacionalDbProvider =
-    StateNotifierProvider.autoDispose<PreoperacionalDbNotifier, Preoperacional>((ref) {
+    StateNotifierProvider.autoDispose<PreoperacionalDbNotifier, Preoperacional>(
+        (ref) {
   return PreoperacionalDbNotifier();
 });
 

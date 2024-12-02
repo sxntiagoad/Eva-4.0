@@ -2,8 +2,10 @@ import 'package:eva/presentation/preoperacional/widgets/inspeccion_db/list_categ
 import 'package:eva/presentation/preoperacional/widgets/kilometraje_db.dart';
 import 'package:eva/presentation/preoperacional/widgets/observaciones_db.dart';
 import 'package:eva/presentation/preoperacional/widgets/uptate_preoperacional.dart';
+import 'package:eva/presentation/preoperacional/widgets/user_search_widget.dart';
 import 'package:eva/providers/is_open.dart';
 import 'package:eva/providers/preoperacionales_provider.dart';
+import 'package:eva/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,10 +30,27 @@ class PreoperacionalScreen extends ConsumerStatefulWidget {
 
 class _PreoperacionalScreenState extends ConsumerState<PreoperacionalScreen> {
   bool _isSaving = false;
+  List<Map<String, dynamic>> _usuariosSeleccionados = [];
 
   void setSaving(bool value) {
     setState(() {
       _isSaving = value;
+    });
+  }
+
+  void _filtrarUsuarios(String query) {
+    ref.read(userFilteredProvider.notifier).filterUsers(query);
+  }
+
+  void _agregarUsuario(Map<String, dynamic> usuario) {
+    setState(() {
+      _usuariosSeleccionados.add(usuario);
+    });
+  }
+
+  void _eliminarUsuario(Map<String, dynamic> usuario) {
+    setState(() {
+      _usuariosSeleccionados.remove(usuario);
     });
   }
 
@@ -49,6 +68,7 @@ class _PreoperacionalScreenState extends ConsumerState<PreoperacionalScreen> {
   @override
   Widget build(BuildContext context) {
     final isOpen = ref.watch(isOpenProvider);
+    final usuariosFiltrados = ref.watch(userFilteredProvider);
 
     return PopScope(
       canPop: !_isSaving,
@@ -101,7 +121,7 @@ class _PreoperacionalScreenState extends ConsumerState<PreoperacionalScreen> {
                           Icons.lock_outline_rounded,
                           color: Colors.red,
                         ),
-                )
+                ),
               ],
             ),
             body: Column(
@@ -113,6 +133,8 @@ class _PreoperacionalScreenState extends ConsumerState<PreoperacionalScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView(
                         children: const [
+                          SizedBox(height: 10),
+                          UserSearchWidget(),
                           SizedBox(height: 10),
                           CarPlateDb(),
                           SizedBox(height: 15),

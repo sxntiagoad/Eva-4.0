@@ -11,12 +11,13 @@ class Preoperacional {
   final bool isOpen;
   final String typeKit;
   final String userId;
-  final String observaciones; // Nuevo campo de observaciones
+  final String observaciones;
   final String fechaInit;
   final String fechaFinal;
   final int kilometrajeInit;
   final int kilometrajeFinal;
-  final Map<String, String> modifiedBy; // Nuevo campo
+  final Map<String, String> modifiedBy;
+  final List<String> relevantes;
 
   Preoperacional({
     this.docId = '',
@@ -30,8 +31,9 @@ class Preoperacional {
     required this.fechaFinal,
     required this.userId,
     this.kilometrajeFinal = 0,
-    this.observaciones = '', // Inicialización del campo
-    this.modifiedBy = const {}, // Inicialización del nuevo campo
+    this.observaciones = '',
+    this.modifiedBy = const {},
+    this.relevantes = const [],
   });
 
   Preoperacional copyWith({
@@ -41,13 +43,14 @@ class Preoperacional {
     bool? isOpen,
     String? typeKit,
     String? docId,
-    String? observaciones, // Para modificar las observaciones
+    String? observaciones,
     int? kilometrajeInit,
     int? kilometrajeFinal,
     String? fechaInit,
     String? fechaFinal,
     String? userId,
     Map<String, String>? modifiedBy,
+    List<String>? relevantes,
   }) {
     return Preoperacional(
       carId: carId ?? this.carId,
@@ -56,14 +59,14 @@ class Preoperacional {
       isOpen: isOpen ?? this.isOpen,
       typeKit: typeKit ?? this.typeKit,
       docId: docId ?? this.docId,
-      observaciones:
-          observaciones ?? this.observaciones, // Actualizar las observaciones
+      observaciones: observaciones ?? this.observaciones,
       kilometrajeInit: kilometrajeInit ?? this.kilometrajeInit,
       kilometrajeFinal: kilometrajeFinal ?? this.kilometrajeFinal,
       fechaInit: fechaInit ?? this.fechaInit,
       fechaFinal: fechaFinal ?? this.fechaFinal,
       userId: userId ?? this.userId,
       modifiedBy: modifiedBy ?? this.modifiedBy,
+      relevantes: relevantes ?? this.relevantes,
     );
   }
 
@@ -85,12 +88,13 @@ class Preoperacional {
       'isOpen': isOpen,
       'typeKit': typeKit,
       'userId': userId,
-      'observaciones': observaciones, // Incluir en el mapa
+      'observaciones': observaciones,
       'kilometrajeInit': kilometrajeInit,
       'kilometrajeFinal': kilometrajeFinal,
       'fechaInit': fechaInit,
       'fechaFinal': fechaFinal,
-      'modifiedBy': modifiedBy, // Incluir en el mapa
+      'modifiedBy': modifiedBy,
+      'relevantes': relevantes,
     };
   }
 
@@ -108,13 +112,14 @@ class Preoperacional {
       ),
       isOpen: map['isOpen'] ?? false,
       typeKit: map['typeKit'] ?? '',
-      observaciones: map['observaciones'] ?? '', // Cargar las observaciones
+      observaciones: map['observaciones'] ?? '',
       kilometrajeInit: map['kilometrajeInit']?.toInt() ?? 0,
       kilometrajeFinal: map['kilometrajeFinal']?.toInt() ?? 0,
       fechaInit: map['fechaInit'] ?? '',
       fechaFinal: map['fechaFinal'] ?? '',
       userId: map['userId'] ?? '',
       modifiedBy: Map<String, String>.from(map['modifiedBy'] ?? {}),
+      relevantes: List<String>.from(map['relevantes'] ?? []),
     );
   }
 
@@ -144,7 +149,8 @@ class Preoperacional {
         other.kilometrajeFinal == kilometrajeFinal &&
         other.fechaInit == fechaInit &&
         other.fechaFinal == fechaFinal &&
-        other.modifiedBy == modifiedBy;
+        other.modifiedBy == modifiedBy &&
+        other.relevantes == relevantes;
   }
 
   @override
@@ -160,6 +166,7 @@ class Preoperacional {
         kilometrajeFinal.hashCode ^
         fechaInit.hashCode ^
         fechaFinal.hashCode ^
-        modifiedBy.hashCode;
+        modifiedBy.hashCode ^
+        relevantes.hashCode;
   }
 }
