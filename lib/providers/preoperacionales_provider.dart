@@ -6,16 +6,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 Future<List<Preoperacional>> getAllPreoperacionales() async {
   try {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
-    final querySnapshot = await FirebaseFirestore.instance
+    
+    final queryOwner = await FirebaseFirestore.instance
         .collection('preoperacionales')
         .where('userId', isEqualTo: userId)
         .where('isOpen', isEqualTo: true)
         .get();
 
-    List<Preoperacional> preoperacionales = querySnapshot.docs.map((doc) {
-      return Preoperacional.fromMap(doc.data()).copyWith(docId: doc.id);
-    }).toList();
+    final queryRelevant = await FirebaseFirestore.instance
+        .collection('preoperacionales')
+        .where('relevantes', arrayContains: userId)
+        .where('isOpen', isEqualTo: true)
+        .get();
 
+    // Combinamos los resultados directamente
+    List<Preoperacional> preoperacionales = [
+      ...queryOwner.docs.map((doc) => 
+        Preoperacional.fromMap(doc.data()).copyWith(docId: doc.id)
+      ),
+      ...queryRelevant.docs.map((doc) => 
+        Preoperacional.fromMap(doc.data()).copyWith(docId: doc.id)
+      ),
+    ];
+
+    // Eliminamos duplicados si es necesario usando un Set
+    preoperacionales = preoperacionales.toSet().toList();
+
+    // Ordenamos los resultados
     preoperacionales.sort((a, b) {
       final aDate = a.fechaFinal.isNotEmpty ? a.fechaFinal : a.fechaInit;
       final bDate = b.fechaFinal.isNotEmpty ? b.fechaFinal : b.fechaInit;

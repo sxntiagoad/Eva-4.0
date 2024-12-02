@@ -38,21 +38,6 @@ class _PreoperacionalScreenState extends ConsumerState<PreoperacionalScreen> {
     });
   }
 
-  void _filtrarUsuarios(String query) {
-    ref.read(userFilteredProvider.notifier).filterUsers(query);
-  }
-
-  void _agregarUsuario(Map<String, dynamic> usuario) {
-    setState(() {
-      _usuariosSeleccionados.add(usuario);
-    });
-  }
-
-  void _eliminarUsuario(Map<String, dynamic> usuario) {
-    setState(() {
-      _usuariosSeleccionados.remove(usuario);
-    });
-  }
 
   @override
   void initState() {
