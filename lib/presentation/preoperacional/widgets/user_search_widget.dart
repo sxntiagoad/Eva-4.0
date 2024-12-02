@@ -28,11 +28,16 @@ class _UserSearchWidgetState extends ConsumerState<UserSearchWidget> {
   @override
   Widget build(BuildContext context) {
     final usuariosFiltrados = ref.watch(userFilteredProvider);
-    final usuariosRelevantes = ref.watch(relevantUsersProvider);
     final preoperacional = ref.watch(preoperacionalDbProvider);
 
     return Card(
+      elevation: 2,
+      margin: const EdgeInsets.all(8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -42,12 +47,14 @@ class _UserSearchWidgetState extends ConsumerState<UserSearchWidget> {
                 const Text(
                   'Usuarios Relevantes:',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16,
+                    color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Wrap(
+                  alignment: WrapAlignment.start,
                   spacing: 8.0,
                   runSpacing: 8.0,
                   children: preoperacional.relevantes.map((usuarioUid) {
@@ -57,23 +64,47 @@ class _UserSearchWidgetState extends ConsumerState<UserSearchWidget> {
                     );
                     final nombreUsuario = usuario['fullName'] ?? 'Usuario Desconocido';
 
-                    return Chip(
-                      label: Text(nombreUsuario),
-                      deleteIcon: const Icon(Icons.close, size: 18),
-                      onDeleted: () {
-                        final nuevosRelevantes = List<String>.from(preoperacional.relevantes)
-                          ..remove(usuarioUid);
-                        ref
-                            .read(preoperacionalDbProvider.notifier)
-                            .updateRelevantes(nuevosRelevantes);
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Usuario eliminado: $nombreUsuario'),
-                            duration: const Duration(seconds: 1),
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.blue.shade100,
+                          width: 1,
+                        ),
+                      ),
+                      child: Chip(
+                        label: Text(
+                          nombreUsuario,
+                          style: TextStyle(
+                            color: Colors.blue.shade700,
+                            fontSize: 13,
                           ),
-                        );
-                      },
+                        ),
+                        backgroundColor: Colors.transparent,
+                        deleteIcon: Icon(
+                          Icons.close,
+                          size: 16,
+                          color: Colors.blue.shade400,
+                        ),
+                        onDeleted: () {
+                          final nuevosRelevantes = List<String>.from(preoperacional.relevantes)
+                            ..remove(usuarioUid);
+                          ref
+                              .read(preoperacionalDbProvider.notifier)
+                              .updateRelevantes(nuevosRelevantes);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Usuario eliminado: $nombreUsuario'),
+                              duration: const Duration(seconds: 1),
+                              backgroundColor: Colors.blue.shade700,
+                            ),
+                          );
+                        },
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                      ),
                     );
                   }).toList(),
                 ),
@@ -81,36 +112,56 @@ class _UserSearchWidgetState extends ConsumerState<UserSearchWidget> {
             ),
           ),
           ListTile(
-            title: const Text('Agregar Usuario Relevante'),
-            trailing: IconButton(
-              icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-              onPressed: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;
-                  if (!_isExpanded) {
-                    _searchController.clear();
-                    _filtrarUsuarios('');
-                  }
-                });
-              },
+            title: Text(
+              'Agregar Usuario Relevante',
+              style: TextStyle(
+                color: Colors.blue.shade700,
+                fontWeight: FontWeight.w500,
+              ),
             ),
+            trailing: Icon(
+              _isExpanded ? Icons.expand_less : Icons.expand_more,
+              color: Colors.blue.shade400,
+            ),
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded;
+                if (!_isExpanded) {
+                  _searchController.clear();
+                  _filtrarUsuarios('');
+                }
+              });
+            },
+            hoverColor: Colors.blue.shade50,
+            splashColor: Colors.blue.shade100,
           ),
           if (_isExpanded) ...[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: TextField(
                 controller: _searchController,
                 onChanged: _filtrarUsuarios,
                 decoration: InputDecoration(
                   hintText: 'Buscar usuario...',
-                  prefixIcon: const Icon(Icons.search),
+                  hintStyle: TextStyle(color: Colors.blue.shade200),
+                  prefixIcon: Icon(Icons.search, color: Colors.blue.shade400),
+                  filled: true,
+                  fillColor: Colors.blue.shade50,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.blue.shade100),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.blue.shade100),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.blue.shade400),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 8),
             SizedBox(
               height: 200,
               child: ListView.builder(
@@ -118,14 +169,19 @@ class _UserSearchWidgetState extends ConsumerState<UserSearchWidget> {
                 itemBuilder: (context, index) {
                   final usuario = usuariosFiltrados[index];
                   final fullName = usuario['fullName'] ?? 'Nombre desconocido';
-                  final bool yaSeleccionado =
-                      preoperacional.relevantes.contains(usuario['uid']);
+                  final bool yaSeleccionado = preoperacional.relevantes.contains(usuario['uid']);
 
                   return ListTile(
-                    title: Text(fullName),
-                    trailing: yaSeleccionado
-                        ? const Icon(Icons.check_circle, color: Colors.green)
-                        : const Icon(Icons.add_circle_outline),
+                    title: Text(
+                      fullName,
+                      style: TextStyle(
+                        color: yaSeleccionado ? Colors.blue.shade700 : Colors.black87,
+                      ),
+                    ),
+                    trailing: Icon(
+                      yaSeleccionado ? Icons.check_circle : Icons.add_circle_outline,
+                      color: yaSeleccionado ? Colors.blue.shade400 : Colors.blue.shade200,
+                    ),
                     onTap: () async {
                       if (!yaSeleccionado) {
                         final uid = usuario['uid'] ?? '';
@@ -140,6 +196,7 @@ class _UserSearchWidgetState extends ConsumerState<UserSearchWidget> {
                           SnackBar(
                             content: Text('Usuario agregado: $fullName'),
                             duration: const Duration(seconds: 1),
+                            backgroundColor: Colors.blue.shade700,
                           ),
                         );
                       }
