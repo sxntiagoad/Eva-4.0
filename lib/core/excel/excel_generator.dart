@@ -21,10 +21,9 @@ Future<void> dataJson(
   final currentCar = cars[preoperacional.carId];
 
   data["FORMULARIO"] = {
-    "Codigo": "SESdd-SGIsds-F00323423",
-    "Fecha de Emision": DateTime.now().toString(),
     "PLACAS No": currentCar?.carPlate ?? '',
     "MODELO": currentCar?.model ?? '',
+    "KM TOTAL": (preoperacional.kilometrajeFinal - preoperacional.kilometrajeInit).abs().toString(),
     "MARCA": currentCar?.brand ?? '',
     "LUGAR": "Puerto Boyacá",
     "TIPO DE VEHICULO": currentCar?.carType ?? '',
