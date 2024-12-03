@@ -8,6 +8,7 @@ import '../../../providers/current_user_provider.dart';
 import '../../list_preoperacionales.dart/screens/list_preoperacionales_screen.dart';
 import '../../new_preoperacional/screens/new_preoperacional_scree.dart';
 import '../widgets/custom_drawer.dart';
+import '../widgets/alerts_widget.dart';
 
 class HomeScreen extends ConsumerWidget {
   static const name = 'home-screen';
@@ -137,6 +138,29 @@ class HomeScreen extends ConsumerWidget {
                                 ),
                                 const SizedBox(height: 30),
                                 _DashboardGrid(isWebPlatform: isWebPlatform),
+                                if (data.role == 'ADMIN') ...[
+                                  const SizedBox(height: 40),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.notifications_outlined,
+                                        color: colors.primary,
+                                        size: isWebPlatform ? 26 : 24,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        'Documentos y Vencimientos',
+                                        style: TextStyle(
+                                          fontSize: isWebPlatform ? 22 : 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: colors.onSurface,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  const AlertsWidget(),
+                                ],
                               ],
                             ),
                           ),
