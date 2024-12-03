@@ -4,26 +4,41 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../providers/preoperacionales_provider.dart';
 import 'preoperacionales_card.dart';
 
-class ListPreoperacionales extends ConsumerWidget {
+class ListPreoperacionales extends ConsumerStatefulWidget {
   const ListPreoperacionales({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final allPreoperaciones = ref.watch(allPreoperacionalesProvider);
-    return allPreoperaciones.when(
-      data: (data) => ListView.builder(
-        itemCount: data.length,
+  ConsumerState<ListPreoperacionales> createState() => _ListPreoperacionalesState();
+}
+
+class _ListPreoperacionalesState extends ConsumerState<ListPreoperacionales> {
+  @override
+  void initState() {
+    super.initState();
+    // Invalida el provider para recargar los datos al entrar a la página
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.invalidate(allPreoperacionalesProvider);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final allPreoperacionesAsync = ref.watch(allPreoperacionalesProvider);
+
+    return allPreoperacionesAsync.when(
+      data: (preoperacionales) => ListView.builder(
+        itemCount: preoperacionales.length,
         itemBuilder: (context, index) {
-          if (index == data.length - 1) {
+          if (index == preoperacionales.length - 1) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 200),
               child: PreoperacionalesCard(
-                preoperacional: data[index],
+                preoperacional: preoperacionales[index],
               ),
             );
           }
           return PreoperacionalesCard(
-            preoperacional: data[index],
+            preoperacional: preoperacionales[index],
           );
         },
       ),

@@ -1,3 +1,4 @@
+import 'package:eva/presentation/preoperacional/widgets/aceite_db_widget.dart';
 import 'package:eva/presentation/preoperacional/widgets/inspeccion_db/list_category_db.dart';
 import 'package:eva/presentation/preoperacional/widgets/kilometraje_db.dart';
 import 'package:eva/presentation/preoperacional/widgets/observaciones_db.dart';
@@ -126,6 +127,8 @@ class _PreoperacionalScreenState extends ConsumerState<PreoperacionalScreen> {
                           TypeKidDbWidget(),
                           SizedBox(height: 10),
                           KilometrajeDbWidget(),
+                          SizedBox(height: 10),
+                          AceiteDbWidget(),
                           Divider(),
                           ListCategoryDb(),
                           SizedBox(height: 100),

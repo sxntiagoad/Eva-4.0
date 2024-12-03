@@ -22,6 +22,8 @@ class PreoperacionalDbNotifier extends StateNotifier<Preoperacional> {
           userId: FirebaseAuth.instance.currentUser?.uid ?? '',
           modifiedBy: {},
           relevantes: [],
+          ultimoCambioAceite: 0,
+          proximoCambioAceite: 0,
         ));
 
   // Actualiza el carId
@@ -183,6 +185,16 @@ class PreoperacionalDbNotifier extends StateNotifier<Preoperacional> {
       updatedRelevantes.add(userId);
       state = state.copyWith(relevantes: updatedRelevantes);
     }
+  }
+
+  // Actualiza el último cambio de aceite
+  void updateUltimoCambioAceite(int newKilometraje) {
+    state = state.copyWith(ultimoCambioAceite: newKilometraje);
+  }
+
+  // Actualiza el próximo cambio de aceite
+  void updateProximoCambioAceite(int newKilometraje) {
+    state = state.copyWith(proximoCambioAceite: newKilometraje);
   }
 }
 
