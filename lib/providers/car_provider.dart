@@ -47,10 +47,6 @@ class SelectedCarNotifier extends StateNotifier<Car?> {
       carPlate: field == 'carPlate' ? value : state!.carPlate,
       carType: field == 'carType' ? value : state!.carType,
       model: field == 'model' ? value : state!.model,
-      ultCambioAceite:
-          field == 'ultCambioAceite' ? value : state!.ultCambioAceite,
-      proxCambioAceite:
-          field == 'proxCambioAceite' ? value : state!.proxCambioAceite,
     );
   }
 

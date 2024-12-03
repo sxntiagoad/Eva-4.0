@@ -146,8 +146,7 @@ class _EditCarPageState extends ConsumerState<EditCarPage> {
                       _buildDateButton('soat', 'SOAT', Icons.security, carAsyncValue.soat),
                       _buildDateButton('tarjetaOp', 'Tarjeta de Operación', Icons.credit_card, carAsyncValue.tarjetaOp),
                       _buildDateButton('tecnicoMec', 'Técnico Mecánica', Icons.build, carAsyncValue.tecnicoMec),
-                      _buildDateButton('ultCambioAceite', 'Último Cambio de Aceite', Icons.oil_barrel, carAsyncValue.ultCambioAceite),
-                      _buildDateButton('proxCambioAceite', 'Próximo Cambio de Aceite', Icons.update, carAsyncValue.proxCambioAceite),
+
                     ],
                   ),
                 ),

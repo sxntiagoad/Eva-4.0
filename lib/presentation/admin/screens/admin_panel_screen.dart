@@ -27,110 +27,118 @@ class AdminPanelScreen extends ConsumerWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      body: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: isDesktop ? 1200 : double.infinity,
-          ),
-          padding: EdgeInsets.all(isDesktop ? 32.0 : 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Bienvenido al Panel de Control',
-                style: TextStyle(
-                  fontSize: isDesktop ? 28 : 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+      body: ListView(
+        children: [
+          Center(
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: isDesktop ? 1200 : double.infinity,
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Selecciona una opción para comenzar',
-                style: TextStyle(
-                  fontSize: isDesktop ? 16 : 14,
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(height: 32),
-              if (isDesktop)
-                SizedBox(
-                  height: 300,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      SizedBox(
-                        width: 300,
-                        child: _buildOptionCard(
+              padding: EdgeInsets.all(isDesktop ? 32.0 : 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Bienvenido al Panel de Control',
+                    style: TextStyle(
+                      fontSize: isDesktop ? 28 : 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Selecciona una opción para comenzar',
+                    style: TextStyle(
+                      fontSize: isDesktop ? 16 : 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  if (isDesktop)
+                    SizedBox(
+                      height: 300,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          SizedBox(
+                            width: 300,
+                            child: _buildOptionCard(
+                              context: context,
+                              title: 'Preoperacionales',
+                              description:
+                                  'Gestiona los preoperacionales de los vehículos',
+                              icon: Icons.assignment_outlined,
+                              route: AdminCars.name,
+                              isDesktop: true,
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                          SizedBox(
+                            width: 300,
+                            child: _buildOptionCard(
+                              context: context,
+                              title: 'Gestionar Carros',
+                              description: 'Administra la flota de vehículos',
+                              icon: Icons.directions_car_outlined,
+                              route: CarManagementPage.name,
+                              isDesktop: true,
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                          SizedBox(
+                            width: 300,
+                            child: _buildOptionCard(
+                              context: context,
+                              title: 'Limpiezas',
+                              description:
+                                  'Gestiona los registros de limpieza de vehículos',
+                              icon: Icons.cleaning_services_outlined,
+                              route: AdminLimpiezas.name,
+                              isDesktop: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    Column(
+                      children: [
+                        _buildOptionCard(
                           context: context,
                           title: 'Preoperacionales',
-                          description: 'Gestiona los preoperacionales de los vehículos',
+                          description:
+                              'Gestiona los preoperacionales de los vehículos',
                           icon: Icons.assignment_outlined,
                           route: AdminCars.name,
-                          isDesktop: true,
+                          isDesktop: false,
                         ),
-                      ),
-                      const SizedBox(width: 24),
-                      SizedBox(
-                        width: 300,
-                        child: _buildOptionCard(
+                        const SizedBox(height: 16),
+                        _buildOptionCard(
                           context: context,
                           title: 'Gestionar Carros',
                           description: 'Administra la flota de vehículos',
                           icon: Icons.directions_car_outlined,
                           route: CarManagementPage.name,
-                          isDesktop: true,
+                          isDesktop: false,
                         ),
-                      ),
-                      const SizedBox(width: 24),
-                      SizedBox(
-                        width: 300,
-                        child: _buildOptionCard(
+                        const SizedBox(height: 16),
+                        _buildOptionCard(
                           context: context,
                           title: 'Limpiezas',
-                          description: 'Gestiona los registros de limpieza de vehículos',
+                          description:
+                              'Gestiona los registros de limpieza de vehículos',
                           icon: Icons.cleaning_services_outlined,
                           route: AdminLimpiezas.name,
-                          isDesktop: true,
+                          isDesktop: false,
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              else
-                Column(
-                  children: [
-                    _buildOptionCard(
-                      context: context,
-                      title: 'Preoperacionales',
-                      description: 'Gestiona los preoperacionales de los vehículos',
-                      icon: Icons.assignment_outlined,
-                      route: AdminCars.name,
-                      isDesktop: false,
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    _buildOptionCard(
-                      context: context,
-                      title: 'Gestionar Carros',
-                      description: 'Administra la flota de vehículos',
-                      icon: Icons.directions_car_outlined,
-                      route: CarManagementPage.name,
-                      isDesktop: false,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildOptionCard(
-                      context: context,
-                      title: 'Limpiezas',
-                      description: 'Gestiona los registros de limpieza de vehículos',
-                      icon: Icons.cleaning_services_outlined,
-                      route: AdminLimpiezas.name,
-                      isDesktop: false,
-                    ),
-                  ],
-                ),
-            ],
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

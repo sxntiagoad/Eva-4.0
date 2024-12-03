@@ -8,6 +8,7 @@ import '../widgets/carplate.dart';
 import '../widgets/inspecciones/list_category.dart';
 import '../widgets/save_widget.dart';
 import '../widgets/type_kid_widget.dart';
+import '../widgets/aceite_widget.dart';
 
 class NewPreoperacionalScree extends ConsumerStatefulWidget {
   static const name = 'new-preoperacional-screen';
@@ -96,6 +97,8 @@ class _NewPreoperacionalScreeState extends ConsumerState<NewPreoperacionalScree>
                           TypeKidWidget(),
                           SizedBox(height: 10),
                           KilometrajeWidget(),
+                          SizedBox(height: 10),
+                          AceiteWidget(),
                           SizedBox(height: 10),
                           ListCategory(),
                           ObservacionesWidget(),

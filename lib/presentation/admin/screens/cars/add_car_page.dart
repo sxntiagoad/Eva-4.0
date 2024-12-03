@@ -26,8 +26,7 @@ class _AddCarPageState extends ConsumerState<AddCarPage> {
       carPlate: '',
       carType: '',
       model: '',
-      ultCambioAceite: null,
-      proxCambioAceite: null,
+
     );
   }
 
@@ -123,18 +122,7 @@ class _AddCarPageState extends ConsumerState<AddCarPage> {
                         date: newCar.tecnicoMec,
                         onPressed: () => _selectDate(context, 'tecnicoMec'),
                       ),
-                      _buildDateButton(
-                        icon: Icons.oil_barrel,
-                        label: 'Último Cambio de Aceite',
-                        date: newCar.ultCambioAceite,
-                        onPressed: () => _selectDate(context, 'ultCambioAceite'),
-                      ),
-                      _buildDateButton(
-                        icon: Icons.oil_barrel,
-                        label: 'Próximo Cambio de Aceite',
-                        date: newCar.proxCambioAceite,
-                        onPressed: () => _selectDate(context, 'proxCambioAceite'),
-                      ),
+                     
                     ],
                   ),
                 ),
@@ -204,12 +192,7 @@ class _AddCarPageState extends ConsumerState<AddCarPage> {
           case 'tecnicoMec':
             newCar = newCar.copyWith(tecnicoMec: Timestamp.fromDate(picked));
             break;
-          case 'ultCambioAceite':
-            newCar = newCar.copyWith(ultCambioAceite: Timestamp.fromDate(picked));
-            break;
-          case 'proxCambioAceite':
-            newCar = newCar.copyWith(proxCambioAceite: Timestamp.fromDate(picked));
-            break;
+
         }
       });
     }

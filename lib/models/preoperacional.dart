@@ -18,6 +18,8 @@ class Preoperacional {
   final int kilometrajeFinal;
   final Map<String, String> modifiedBy;
   final List<String> relevantes;
+  final int ultimoCambioAceite;
+  final int proximoCambioAceite;
 
   Preoperacional({
     this.docId = '',
@@ -34,6 +36,8 @@ class Preoperacional {
     this.observaciones = '',
     this.modifiedBy = const {},
     this.relevantes = const [],
+    this.ultimoCambioAceite = 0,
+    this.proximoCambioAceite = 0,
   });
 
   Preoperacional copyWith({
@@ -51,6 +55,8 @@ class Preoperacional {
     String? userId,
     Map<String, String>? modifiedBy,
     List<String>? relevantes,
+    int? ultimoCambioAceite,
+    int? proximoCambioAceite,
   }) {
     return Preoperacional(
       carId: carId ?? this.carId,
@@ -67,6 +73,8 @@ class Preoperacional {
       userId: userId ?? this.userId,
       modifiedBy: modifiedBy ?? this.modifiedBy,
       relevantes: relevantes ?? this.relevantes,
+      ultimoCambioAceite: ultimoCambioAceite ?? this.ultimoCambioAceite,
+      proximoCambioAceite: proximoCambioAceite ?? this.proximoCambioAceite,
     );
   }
 
@@ -95,6 +103,8 @@ class Preoperacional {
       'fechaFinal': fechaFinal,
       'modifiedBy': modifiedBy,
       'relevantes': relevantes,
+      'ultimoCambioAceite': ultimoCambioAceite,
+      'proximoCambioAceite': proximoCambioAceite,
     };
   }
 
@@ -120,6 +130,8 @@ class Preoperacional {
       userId: map['userId'] ?? '',
       modifiedBy: Map<String, String>.from(map['modifiedBy'] ?? {}),
       relevantes: List<String>.from(map['relevantes'] ?? []),
+      ultimoCambioAceite: map['ultimoCambioAceite']?.toInt() ?? 0,
+      proximoCambioAceite: map['proximoCambioAceite']?.toInt() ?? 0,
     );
   }
 
@@ -150,7 +162,9 @@ class Preoperacional {
         other.fechaInit == fechaInit &&
         other.fechaFinal == fechaFinal &&
         other.modifiedBy == modifiedBy &&
-        other.relevantes == relevantes;
+        other.relevantes == relevantes &&
+        other.ultimoCambioAceite == ultimoCambioAceite &&
+        other.proximoCambioAceite == proximoCambioAceite;
   }
 
   @override
@@ -167,6 +181,8 @@ class Preoperacional {
         fechaInit.hashCode ^
         fechaFinal.hashCode ^
         modifiedBy.hashCode ^
-        relevantes.hashCode;
+        relevantes.hashCode ^
+        ultimoCambioAceite.hashCode ^
+        proximoCambioAceite.hashCode;
   }
 }

@@ -37,8 +37,8 @@ Future<void> dataJson(
     "DEL 20": "24",
     "KMTS INICIAL": preoperacional.kilometrajeInit.toString(),
     "KMTS FINAL": preoperacional.kilometrajeFinal.toString(),
-    "KMTS ÚLTIMO CAMBIO DE ACEITE": fecha(currentCar?.ultCambioAceite),
-    "KMTS PROXIMO CAMBIO DE ACEITE": fecha(currentCar?.proxCambioAceite),
+    "KMTS ÚLTIMO CAMBIO DE ACEITE": preoperacional.ultimoCambioAceite,
+    "KMTS PROXIMO CAMBIO DE ACEITE": preoperacional.proximoCambioAceite,
   };
   final user = ref.read(currentUserProvider);
   final userValue = user.value;
