@@ -106,6 +106,15 @@ class AdminPanelScreen extends ConsumerWidget {
                       children: [
                         _buildOptionCard(
                           context: context,
+                          title: 'Gestionar Carros',
+                          description: 'Administra la flota de vehículos',
+                          icon: Icons.directions_car_outlined,
+                          route: CarManagementPage.name,
+                          isDesktop: false,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildOptionCard(
+                          context: context,
                           title: 'Preoperacionales',
                           description:
                               'Gestiona los preoperacionales de los vehículos',
@@ -116,18 +125,18 @@ class AdminPanelScreen extends ConsumerWidget {
                         const SizedBox(height: 16),
                         _buildOptionCard(
                           context: context,
-                          title: 'Gestionar Carros',
-                          description: 'Administra la flota de vehículos',
-                          icon: Icons.directions_car_outlined,
-                          route: CarManagementPage.name,
-                          isDesktop: false,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildOptionCard(
-                          context: context,
                           title: 'Limpiezas',
                           description:
                               'Gestiona los registros de limpieza de vehículos',
+                          icon: Icons.cleaning_services_outlined,
+                          route: AdminLimpiezas.name,
+                          isDesktop: false,
+                        ),
+                        _buildOptionCard(
+                          context: context,
+                          title: 'Autoreportes de Salud',
+                          description:
+                              'Gestiona los autoreportes de salud de los empleados',
                           icon: Icons.cleaning_services_outlined,
                           route: AdminLimpiezas.name,
                           isDesktop: false,

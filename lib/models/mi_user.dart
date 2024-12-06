@@ -9,7 +9,15 @@ class MyUser {
   final String role;
   final String photoUrl;
   final String password;
-  final String? signature; // Nuevo campo para la firma
+  final String? signature;
+  final String cc;
+  final String eps;
+  final String arl;
+  final String afp;
+  final String emergencyContactName;
+  final String emergencyContactPhone;
+  final String relationship;
+  final String address;
 
   MyUser({
     required this.fullName,
@@ -17,7 +25,15 @@ class MyUser {
     required this.role,
     this.photoUrl = notUserPhoto,
     required this.password,
-    this.signature, // Añadimos el campo signature
+    this.signature,
+    this.cc = '',
+    this.eps = '',
+    this.arl = '',
+    this.afp = '',
+    this.emergencyContactName = '',
+    this.emergencyContactPhone = '',
+    this.relationship = '',
+    this.address = '',
   });
 
   MyUser copyWith({
@@ -26,7 +42,15 @@ class MyUser {
     String? role,
     String? photoUrl,
     String? password,
-    String? signature, // Añadimos signature al copyWith
+    String? signature,
+    String? cc,
+    String? eps,
+    String? arl,
+    String? afp,
+    String? emergencyContactName,
+    String? emergencyContactPhone,
+    String? relationship,
+    String? address,
   }) {
     return MyUser(
       fullName: fullName ?? this.fullName,
@@ -34,7 +58,15 @@ class MyUser {
       role: role ?? this.role,
       photoUrl: photoUrl ?? this.photoUrl,
       password: password ?? this.password,
-      signature: signature ?? this.signature, // Incluimos signature
+      signature: signature ?? this.signature,
+      cc: cc ?? this.cc,
+      eps: eps ?? this.eps,
+      arl: arl ?? this.arl,
+      afp: afp ?? this.afp,
+      emergencyContactName: emergencyContactName ?? this.emergencyContactName,
+      emergencyContactPhone: emergencyContactPhone ?? this.emergencyContactPhone,
+      relationship: relationship ?? this.relationship,
+      address: address ?? this.address,
     );
   }
 
@@ -44,7 +76,15 @@ class MyUser {
       'email': email,
       'role': role,
       'photoUrl': photoUrl,
-      'signature': signature, // Añadimos signature al mapa
+      'signature': signature,
+      'cc': cc,
+      'eps': eps,
+      'arl': arl,
+      'afp': afp,
+      'emergencyContactName': emergencyContactName,
+      'emergencyContactPhone': emergencyContactPhone,
+      'relationship': relationship,
+      'address': address,
     };
   }
 
@@ -55,7 +95,15 @@ class MyUser {
       role: map['role'] ?? '',
       photoUrl: map['photoUrl'] ?? notUserPhoto,
       password: '',
-      signature: map['signature'], // Obtenemos signature del mapa
+      signature: map['signature'],
+      cc: map['cc'] ?? '',
+      eps: map['eps'] ?? '',
+      arl: map['arl'] ?? '',
+      afp: map['afp'] ?? '',
+      emergencyContactName: map['emergencyContactName'] ?? '',
+      emergencyContactPhone: map['emergencyContactPhone'] ?? '',
+      relationship: map['relationship'] ?? '',
+      address: map['address'] ?? '',
     );
   }
 
@@ -65,7 +113,7 @@ class MyUser {
 
   @override
   String toString() {
-    return 'User(fullName: $fullName, email: $email, role: $role, photoUrl: $photoUrl, password: $password, signature: $signature)';
+    return 'User(fullName: $fullName, email: $email, role: $role, photoUrl: $photoUrl, password: $password, signature: $signature, cc: $cc, eps: $eps, arl: $arl, afp: $afp, emergencyContactName: $emergencyContactName, emergencyContactPhone: $emergencyContactPhone, relationship: $relationship, address: $address)';
   }
 
   @override
@@ -78,7 +126,15 @@ class MyUser {
         other.role == role &&
         other.photoUrl == photoUrl &&
         other.password == password &&
-        other.signature == signature; // Incluimos signature en la comparación
+        other.signature == signature &&
+        other.cc == cc &&
+        other.eps == eps &&
+        other.arl == arl &&
+        other.afp == afp &&
+        other.emergencyContactName == emergencyContactName &&
+        other.emergencyContactPhone == emergencyContactPhone &&
+        other.relationship == relationship &&
+        other.address == address;
   }
 
   @override
@@ -88,6 +144,14 @@ class MyUser {
         role.hashCode ^
         photoUrl.hashCode ^
         password.hashCode ^
-        signature.hashCode; // Incluimos signature en el hashCode
+        signature.hashCode ^
+        cc.hashCode ^
+        eps.hashCode ^
+        arl.hashCode ^
+        afp.hashCode ^
+        emergencyContactName.hashCode ^
+        emergencyContactPhone.hashCode ^
+        relationship.hashCode ^
+        address.hashCode;
   }
 }

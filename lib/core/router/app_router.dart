@@ -1,7 +1,10 @@
 import 'package:eva/main.dart';
+import 'package:eva/models/health_report.dart';
 import 'package:eva/presentation/admin/screens/limpiezas/admin_limpiezas.dart';
 import 'package:eva/presentation/admin/screens/admin_panel_screen.dart';
 import 'package:eva/presentation/admin/screens/cars/car_management_page.dart';
+import 'package:eva/presentation/salud/screens/list_health_screen.dart';
+import 'package:eva/presentation/salud/screens/new_health_report_screen.dart';
 import 'package:go_router/go_router.dart';
 import '../../presentation/limpieza/screens/new_limpieza_screen.dart';
 import '../../models/preoperacional.dart';
@@ -18,6 +21,7 @@ import '../../presentation/admin/screens/preoperacionales/admin_cars.dart';
 import '../../presentation/limpieza/screens/limpiezas_screen.dart';
 import '../../presentation/limpieza/screens/edit_limpieza_screen.dart';
 import '../../models/limpieza.dart';
+import '../../presentation/salud/screens/edit_health_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/${IsAuthenticated.name}',
@@ -118,7 +122,26 @@ final appRouter = GoRouter(
           path: '/${AdminLimpiezas.name}',
           name: AdminLimpiezas.name,
           builder: (context, state) => const AdminLimpiezas(),
-        )
+        ),
+        GoRoute(
+          path: '/${NewHealthReportScreen.name}',
+          name: NewHealthReportScreen.name,
+          builder: (context, state) => const NewHealthReportScreen(),
+        ),GoRoute(
+          path: '/${ListHealthScreen.name}',
+          name: ListHealthScreen.name,
+          builder: (context, state) => const ListHealthScreen(),
+        ),
+        GoRoute(
+          path: '/${EditHealthScreen.name}',
+          name: EditHealthScreen.name,
+          builder: (context, state) {
+            final healthReport = state.extra as HealthReport;
+            return EditHealthScreen(
+              health: healthReport,
+            );
+          },
+        ),
       ],
     ),
   ],

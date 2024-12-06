@@ -1,4 +1,6 @@
 import 'package:eva/presentation/limpieza/screens/new_limpieza_screen.dart';
+import 'package:eva/presentation/salud/screens/list_health_screen.dart';
+import 'package:eva/presentation/salud/screens/new_health_report_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -234,7 +236,7 @@ class _DashboardGrid extends StatelessWidget {
             _DashboardCard(
               title: 'Nuevo Chequeo\nde Limpieza',
               subtitle: 'Registro de chequeo',
-              icon: Icons.cleaning_services,  // Icono de limpieza
+              icon: Icons.cleaning_services,
               color: AppTheme.mainColor,
               onTap: () => context.pushNamed(NewLimpiezaScreen.name),
               isWebPlatform: isWebPlatform,
@@ -245,6 +247,22 @@ class _DashboardGrid extends StatelessWidget {
               icon: Icons.playlist_add_check_circle_sharp,
               color: AppTheme.mainColor,
               onTap: () => context.pushNamed('limpiezas-screen'),
+              isWebPlatform: isWebPlatform,
+            ),
+            _DashboardCard(
+              title: 'Autoreporte\nde Salud',
+              subtitle: 'Condiciones semanales',
+              icon: Icons.health_and_safety_outlined,
+              color: AppTheme.mainColor,
+              onTap: () => context.pushNamed(NewHealthReportScreen.name),
+              isWebPlatform: isWebPlatform,
+            ),
+            _DashboardCard(
+              title: 'Editar\nAutoreporte de Salud',
+              subtitle: 'Modificar existente',
+              icon: Icons.edit,
+              color: AppTheme.mainColor,
+              onTap: () => context.pushNamed(ListHealthScreen.name),
               isWebPlatform: isWebPlatform,
             ),
           ],

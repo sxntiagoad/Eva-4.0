@@ -35,6 +35,14 @@ class UserDataNotifier extends StateNotifier<MyUser?> {
         fullName: field == 'fullName' ? value : state!.fullName,
         email: field == 'email' ? value : state!.email,
         role: field == 'role' ? value : state!.role,
+        cc: field == 'cc' ? value : state!.cc,
+        eps: field == 'eps' ? value : state!.eps,
+        arl: field == 'arl' ? value : state!.arl,
+        afp: field == 'afp' ? value : state!.afp,
+        emergencyContactName: field == 'emergencyContactName' ? value : state!.emergencyContactName,
+        emergencyContactPhone: field == 'emergencyContactPhone' ? value : state!.emergencyContactPhone,
+        relationship: field == 'relationship' ? value : state!.relationship,
+        address: field == 'address' ? value : state!.address,
       );
     }
   }
