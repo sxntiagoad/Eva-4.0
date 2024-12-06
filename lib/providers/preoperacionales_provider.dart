@@ -19,18 +19,23 @@ Future<List<Preoperacional>> getAllPreoperacionales() async {
         .where('isOpen', isEqualTo: true)
         .get();
 
-    // Combinamos los resultados directamente
-    List<Preoperacional> preoperacionales = [
-      ...queryOwner.docs.map((doc) => 
-        Preoperacional.fromMap(doc.data()).copyWith(docId: doc.id)
-      ),
-      ...queryRelevant.docs.map((doc) => 
-        Preoperacional.fromMap(doc.data()).copyWith(docId: doc.id)
-      ),
-    ];
+    // Usamos un Map para evitar duplicados
+    Map<String, Preoperacional> preoperacionalesMap = {};
 
-    // Eliminamos duplicados si es necesario usando un Set
-    preoperacionales = preoperacionales.toSet().toList();
+    // Agregamos los documentos del propietario
+    for (var doc in queryOwner.docs) {
+      preoperacionalesMap[doc.id] = Preoperacional.fromMap(doc.data())
+          .copyWith(docId: doc.id);
+    }
+
+    // Agregamos los documentos relevantes (si ya existe uno con el mismo ID, se sobrescribe)
+    for (var doc in queryRelevant.docs) {
+      preoperacionalesMap[doc.id] = Preoperacional.fromMap(doc.data())
+          .copyWith(docId: doc.id);
+    }
+
+    // Convertimos el Map a List
+    List<Preoperacional> preoperacionales = preoperacionalesMap.values.toList();
 
     // Ordenamos los resultados
     preoperacionales.sort((a, b) {

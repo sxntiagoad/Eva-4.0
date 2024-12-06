@@ -52,7 +52,7 @@ class CategoryItem extends StatelessWidget {
                 children: [
                   _buildDay('L', 'lunes', weekData.lunes),
                   _buildDay('M', 'martes', weekData.martes),
-                  _buildDay('X', 'miercoles', weekData.miercoles),
+                  _buildDay('M', 'miercoles', weekData.miercoles),
                   _buildDay('J', 'jueves', weekData.jueves),
                   _buildDay('V', 'viernes', weekData.viernes),
                   _buildDay('S', 'sabado', weekData.sabado),

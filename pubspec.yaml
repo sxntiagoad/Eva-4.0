@@ -28,10 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  cloud_firestore: ^5.2.1
   dio: ^5.7.0
   firebase_auth: ^5.1.4
-  firebase_core: ^3.4.1
   firebase_storage: ^12.3.0
   flutter:
     sdk: flutter
@@ -53,10 +51,11 @@ dependencies:
   yaml_edit: ^2.2.1
   url_launcher: ^6.3.1
   share_plus: ^10.1.2
-  open_file: ^3.5.10
+  open_file: ^3.4.0
   flutter_file_downloader: ^2.0.1-dev.2
-  open_file_plus: ^3.4.1+1
   permission_handler: ^11.3.1
+  firebase_core: ^3.8.0
+  cloud_firestore: ^5.5.0
 
 dev_dependencies:
   flutter_test:
@@ -69,12 +68,15 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-flutter_launcher_icons:
-  image_path: "assets/logo_eva.png"
+flutter_icons:
   android: true
   ios: true
+  image_path: "assets/logo_eva.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/logo_eva.png"
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
 # The following section is specific to Flutter packages.
 flutter:
 

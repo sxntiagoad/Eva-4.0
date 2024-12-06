@@ -23,7 +23,10 @@ Future<void> dataJson(
   data["FORMULARIO"] = {
     "PLACAS No": currentCar?.carPlate ?? '',
     "MODELO": currentCar?.model ?? '',
-    "KM TOTAL": (preoperacional.kilometrajeFinal - preoperacional.kilometrajeInit).abs().toString(),
+    "KM TOTAL":
+        (preoperacional.kilometrajeFinal - preoperacional.kilometrajeInit)
+            .abs()
+            .toString(),
     "MARCA": currentCar?.brand ?? '',
     "LUGAR": "Puerto Boyacá",
     "TIPO DE VEHICULO": currentCar?.carType ?? '',
@@ -41,29 +44,37 @@ Future<void> dataJson(
     "KMTS PROXIMO CAMBIO DE ACEITE": preoperacional.proximoCambioAceite,
   };
   final user = ref.read(currentUserProvider);
+  // ignore: unused_local_variable
   final userValue = user.value;
 
   final logoUrl = await getSESCOTURImageUrl();
   final firmaEncargadoUrl = await getManagerSignatureUrl();
-  String firmaUrl = '';
-  if (userValue != null) {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid != null) {
-      firmaUrl = await getUserSignatureUrl(uid);
-    }
+
+  // Obtener firmas de usuarios relevantes
+  Map<String, String> firmasRelevantes = {};
+  for (String uid in preoperacional.relevantes) {
+    String firma = await getUserSignatureUrl(uid);
+    firmasRelevantes['FIRMA_USER_$uid'] = firma;
   }
+
+
+  final firmaUrl = await getUserSignatureUrl(preoperacional.userId);
+ 
   data['IMAGENES'] = {
     'FIRMA_USER': firmaUrl,
     'FIRMA_ENCARGADO': firmaEncargadoUrl,
     'LOGO': logoUrl,
     'FIRMA_REP': firmaUrl,
+    'FIRMAS_RELV':firmasRelevantes, // Agregar todas las firmas relevantes al mapa
   };
+
 
   data["PIE_TABLA"] = {
     "Nombre del Conductor": user.value?.fullName ?? '',
     "OBSERVACIONES": preoperacional.observaciones.isNotEmpty
         ? preoperacional.observaciones
         : 'Sin observaciones',
+    "MODIFICADO_POR": preoperacional.modifiedBy,
   };
 
   await enviarJsonYSubirArchivoAFirebase(
@@ -117,7 +128,9 @@ Future<String> getSESCOTURImageUrl() async {
 
 Future<String> getManagerSignatureUrl() async {
   try {
-    return await FirebaseStorage.instance.ref('FIRMA_ROGER.png').getDownloadURL();
+    return await FirebaseStorage.instance
+        .ref('FIRMA_ROGER.png')
+        .getDownloadURL();
   } catch (e) {
     // ignore: avoid_print
     return '';
@@ -126,7 +139,9 @@ Future<String> getManagerSignatureUrl() async {
 
 Future<String> getUserSignatureUrl(String uid) async {
   try {
-    return await FirebaseStorage.instance.ref('firmas/$uid.png').getDownloadURL();
+    return await FirebaseStorage.instance
+        .ref('firmas/$uid.png')
+        .getDownloadURL();
   } catch (e) {
     // ignore: avoid_print
     return '';

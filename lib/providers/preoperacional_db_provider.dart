@@ -174,7 +174,7 @@ class PreoperacionalDbNotifier extends StateNotifier<Preoperacional> {
     state = newPreoperacional.copyWith(
       observaciones: newPreoperacional
           .observaciones, // Asegurar que se copien las observaciones
-      userId: state.userId, // Mantén el userId original
+      userId: newPreoperacional.userId, // Mantén el userId original
     );
   }
 
