@@ -1,3 +1,4 @@
+import 'package:eva/core/excel/salud_generator.dart';
 import 'package:eva/models/health_report.dart';
 import 'package:eva/providers/salud/health_db_provider.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,40 @@ class _EditHealthScreenState extends ConsumerState<EditHealthScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(healthDbProvider.notifier).replaceHealth(widget.health);
     });
+  }
+
+  Future<void> _saveHealthReport() async {
+    setState(() => _isSaving = true);
+    try {
+      final healthDbNotifier = ref.read(healthDbProvider.notifier);
+      await healthDbNotifier.updateHealthInFirebase();
+
+      await healthDataJson(
+        ref: ref,
+        healthReport: ref.read(healthDbProvider),
+      );
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Autoreporte guardado correctamente'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al guardar: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      setState(() => _isSaving = false);
+    }
   }
 
   @override
@@ -150,6 +185,8 @@ class _EditHealthScreenState extends ConsumerState<EditHealthScreen> {
                 alignment: Alignment.bottomCenter,
                 child: SaveHealthReportButton(
                   onSavingStateChanged: _onSavingStateChanged,
+                  ignoreValidation: true,
+                  onSave: _saveHealthReport,
                 ),
               ),
             ),

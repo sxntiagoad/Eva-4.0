@@ -15,6 +15,7 @@ class HealthReportNotifier extends StateNotifier<HealthReport> {
         fecha: DateFormat('yyyy-MM-dd HH:mm:ss')
             .format(DateTime.now().toLocal()),
         questions: HealthReport.createEmptyQuestions(),
+        isOpen: true,
       ));
 
   void updateDayOfWeek(String questionId, String day, bool? value) {

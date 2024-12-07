@@ -8,11 +8,12 @@ Future<void> enviarAFirebaseSalud({
 }) async {
   try {
     Dio dio = Dio();
-    String url = 'https://web-production-1db54.up.railway.app/rellenar_excel_salud';
+    String url =
+        'https://web-production-1db54.up.railway.app/rellenar_excel_salud';
 
     dio.options.connectTimeout = const Duration(seconds: 30);
     dio.options.receiveTimeout = const Duration(seconds: 30);
-    
+
     Response response = await dio.post(
       url,
       data: jsonData,
@@ -29,12 +30,13 @@ Future<void> enviarAFirebaseSalud({
       Uint8List bytes = Uint8List.fromList(response.data);
 
       if (kIsWeb) {
-        await uploadToFirebaseWeb(bytes, archiveName, isPo: false);
+        await uploadToFirebaseWeb(bytes, archiveName);
       } else {
-        await uploadToFirebaseMobile(bytes, archiveName, isPo: false);
+        await uploadToFirebaseMobile(bytes, archiveName);
       }
     } else {
-      throw Exception('Error del servidor: ${response.statusCode} - ${response.statusMessage}');
+      throw Exception(
+          'Error del servidor: ${response.statusCode} - ${response.statusMessage}');
     }
   } on DioException catch (e) {
     String mensaje = '';
@@ -60,9 +62,9 @@ Future<void> enviarAFirebaseSalud({
   }
 }
 
-Future<void> uploadToFirebaseWeb(Uint8List bytes, String archiveName, {bool isPo = false}) async {
+Future<void> uploadToFirebaseWeb(Uint8List bytes, String archiveName) async {
   FirebaseStorage storage = FirebaseStorage.instance;
-  String path = isPo ? 'preoperacionales' : 'reportes_salud';
+  String path = 'reportes_salud';
   Reference ref = storage.ref().child('$path/$archiveName.xlsx');
 
   UploadTask uploadTask = ref.putData(bytes);
@@ -73,9 +75,12 @@ Future<void> uploadToFirebaseWeb(Uint8List bytes, String archiveName, {bool isPo
   }
 }
 
-Future<void> uploadToFirebaseMobile(Uint8List bytes, String archiveName, {bool isPo = false}) async {
+Future<void> uploadToFirebaseMobile(
+  Uint8List bytes,
+  String archiveName,
+) async {
   FirebaseStorage storage = FirebaseStorage.instance;
-  String path = isPo ? 'preoperacionales' : 'reportes_salud';
+  String path = 'reportes_salud';
   Reference ref = storage.ref().child('$path/$archiveName.xlsx');
 
   UploadTask uploadTask = ref.putData(bytes);

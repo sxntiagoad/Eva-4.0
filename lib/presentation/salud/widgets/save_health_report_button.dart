@@ -4,9 +4,13 @@ import '../../../providers/salud/new_health_report_provider.dart';
 
 class SaveHealthReportButton extends ConsumerStatefulWidget {
   final Function(bool) onSavingStateChanged;
+  final Future<void> Function() onSave;
+  final bool ignoreValidation;
 
   const SaveHealthReportButton({
     required this.onSavingStateChanged,
+    required this.onSave,
+    this.ignoreValidation = false,
     super.key,
   });
 
@@ -20,29 +24,19 @@ class SaveHealthReportButtonState extends ConsumerState<SaveHealthReportButton> 
   @override
   Widget build(BuildContext context) {
     final healthReport = ref.watch(newHealthReportProvider);
-    final isValid = ref.watch(isHealthReportValidProvider);
+    final isValid = widget.ignoreValidation || ref.watch(isHealthReportValidProvider);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: FilledButton(
-        onPressed: !isValid || isLoading
+        onPressed: isLoading || !isValid
             ? null
             : () async {
                 setState(() => isLoading = true);
                 widget.onSavingStateChanged(true);
 
                 try {
-                  await ref.read(newHealthReportProvider.notifier).saveHealthReport();
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Autoreporte guardado correctamente'),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    ref.read(newHealthReportProvider.notifier).reset();
-                    Navigator.of(context).pop();
-                  }
+                  await widget.onSave();
                 } catch (e) {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -58,8 +52,8 @@ class SaveHealthReportButtonState extends ConsumerState<SaveHealthReportButton> 
                 }
               },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-            if (states.contains(MaterialState.disabled)) return Colors.grey;
+          backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+            if (states.contains(WidgetState.disabled)) return Colors.grey;
             return healthReport.isOpen ? Colors.green : Colors.red;
           }),
         ),

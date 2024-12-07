@@ -75,7 +75,7 @@ Future<String> getUserSignatureUrl(String userId) async {
 Future<String> getSuperTrans() async {
   try {
     final storage = FirebaseStorage.instance;
-    final ref = storage.ref().child('super_trans.png');
+    final ref = storage.ref().child('super_transporte.png');
     final url = await ref.getDownloadURL();
     return url;
   } catch (e) {

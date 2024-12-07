@@ -8,62 +8,126 @@ import 'package:intl/intl.dart';
 class HealthDbNotifier extends StateNotifier<HealthReport> {
   HealthDbNotifier()
       : super(HealthReport(
-        userId: FirebaseAuth.instance.currentUser?.uid ?? '',
-        fecha: DateFormat('yyyy-MM-dd HH:mm:ss')
-            .format(DateTime.now().toLocal()),
-        questions: {},
-      ));
+          userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+          fecha: DateFormat('yyyy-MM-dd HH:mm:ss')
+              .format(DateTime.now().toLocal()),
+          questions: {},
+        ));
+
+   Future<void> loadHealthReport(String docId) async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+      final docRef = firestore.collection('health_reports').doc(docId);
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        final data = docSnapshot.data();
+        if (data != null) {
+          final loadedHealthReport = HealthReport.fromMap(data);
+          state = loadedHealthReport;
+          print('Reporte de salud cargado: ${state.toMap()}');
+        }
+      } else {
+        print('No se encontró el documento con ID: $docId');
+      }
+    } catch (e) {
+      print('Error al cargar el reporte de salud: $e');
+      throw Exception('Error al cargar el reporte de salud: $e');
+    }
+  }
 
   void updateIsOpen(bool newIsOpen) {
     state = state.copyWith(isOpen: newIsOpen);
   }
 
-  void replaceHealth(HealthReport newHealth) {
-    state = newHealth;
-  }
   void updateDayOfWeek(String questionId, String day, bool? value) {
     final updatedQuestions = Map<String, Week>.from(state.questions);
-    
-    if (updatedQuestions.containsKey(questionId)) {
-      final currentWeek = updatedQuestions[questionId]!;
-      
-      final updatedWeek = currentWeek.copyWith(
-        lunes: day == 'Lunes' ? () => value : null,
-        martes: day == 'Martes' ? () => value : null,
-        miercoles: day == 'Miercoles' ? () => value : null,
-        jueves: day == 'Jueves' ? () => value : null,
-        viernes: day == 'Viernes' ? () => value : null,
-        sabado: day == 'Sabado' ? () => value : null,
-        domingo: day == 'Domingo' ? () => value : null,
-      );
 
-      updatedQuestions[questionId] = updatedWeek;
-      state = state.copyWith(questions: updatedQuestions);
+    if (!updatedQuestions.containsKey(questionId)) {
+      updatedQuestions[questionId] = Week();
     }
+
+    final currentWeek = updatedQuestions[questionId];
+    Week updatedWeek;
+
+    switch (day.toLowerCase()) {
+      case 'lunes':
+        updatedWeek = currentWeek!.copyWith(lunes: () => value);
+        break;
+      case 'martes':
+        updatedWeek = currentWeek!.copyWith(martes: () => value);
+        break;
+      case 'miercoles':
+        updatedWeek = currentWeek!.copyWith(miercoles: () => value);
+        break;
+      case 'jueves':
+        updatedWeek = currentWeek!.copyWith(jueves: () => value);
+        break;
+      case 'viernes':
+        updatedWeek = currentWeek!.copyWith(viernes: () => value);
+        break;
+      case 'sabado':
+        updatedWeek = currentWeek!.copyWith(sabado: () => value);
+        break;
+      case 'domingo':
+        updatedWeek = currentWeek!.copyWith(domingo: () => value);
+        break;
+      default:
+        return;
+    }
+
+    updatedQuestions[questionId] = updatedWeek;
+    state = state.copyWith(questions: updatedQuestions);
+  }
+
+  void replaceHealth(HealthReport newHealth) {
+    print('replaceHealth - Datos recibidos:');
+    print('DocId: ${newHealth.docId}');
+    print('UserId: ${newHealth.userId}');
+    print('Fecha: ${newHealth.fecha}');
+    print('IsOpen: ${newHealth.isOpen}');
+    print('Questions: ${newHealth.questions}');
+    
+    state = newHealth;
   }
 
   Future<void> updateHealthInFirebase() async {
     try {
       final firestore = FirebaseFirestore.instance;
-      final healthRef = firestore.collection('health');
+      final healthRef = firestore.collection('health_reports');
+
+      print('Intentando actualizar/crear reporte de salud');
+      print('DocId: ${state.docId}');
+      print('Datos: ${state.toMap()}');
 
       if (state.docId.isEmpty) {
+        // Si no hay docId, crear nuevo documento
         final docRef = await healthRef.add(state.toMap());
         state = state.copyWith(docId: docRef.id);
+        print('Nuevo documento creado con ID: ${docRef.id}');
       } else {
+        // Si hay docId, intentar actualizar
         final docRef = healthRef.doc(state.docId);
+        
+        // Verificar si el documento existe
         final docSnapshot = await docRef.get();
         if (docSnapshot.exists) {
+          // Actualizar documento existente
           await docRef.update(state.toMap());
+          print('Documento existente actualizado');
         } else {
+          // Si el documento no existe, crear uno nuevo
           final newDocRef = await healthRef.add(state.toMap());
           state = state.copyWith(docId: newDocRef.id);
+          print('Documento no encontrado, creado nuevo con ID: ${newDocRef.id}');
         }
       }
     } catch (e) {
-      throw Exception('Error al actualizar registro de salud: $e');
+      print('Error en updateHealthInFirebase: $e');
+      throw Exception('Error al actualizar reporte de salud: $e');
     }
   }
+
 }
 
 final healthDbProvider =
