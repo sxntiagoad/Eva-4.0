@@ -22,6 +22,7 @@ import '../../presentation/limpieza/screens/limpiezas_screen.dart';
 import '../../presentation/limpieza/screens/edit_limpieza_screen.dart';
 import '../../models/limpieza.dart';
 import '../../presentation/salud/screens/edit_health_screen.dart';
+import '../../presentation/admin/screens/salud/admin_users.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/${IsAuthenticated.name}',
@@ -141,6 +142,11 @@ final appRouter = GoRouter(
               health: healthReport,
             );
           },
+        ),
+        GoRoute(
+          path: '/${AdminUsers.name}',
+          name: AdminUsers.name,
+          builder: (context, state) => const AdminUsers(),
         ),
       ],
     ),

@@ -25,13 +25,10 @@ class HealthDbNotifier extends StateNotifier<HealthReport> {
         if (data != null) {
           final loadedHealthReport = HealthReport.fromMap(data);
           state = loadedHealthReport;
-          print('Reporte de salud cargado: ${state.toMap()}');
         }
       } else {
-        print('No se encontró el documento con ID: $docId');
       }
     } catch (e) {
-      print('Error al cargar el reporte de salud: $e');
       throw Exception('Error al cargar el reporte de salud: $e');
     }
   }
@@ -96,15 +93,11 @@ class HealthDbNotifier extends StateNotifier<HealthReport> {
       final firestore = FirebaseFirestore.instance;
       final healthRef = firestore.collection('health_reports');
 
-      print('Intentando actualizar/crear reporte de salud');
-      print('DocId: ${state.docId}');
-      print('Datos: ${state.toMap()}');
 
       if (state.docId.isEmpty) {
         // Si no hay docId, crear nuevo documento
         final docRef = await healthRef.add(state.toMap());
         state = state.copyWith(docId: docRef.id);
-        print('Nuevo documento creado con ID: ${docRef.id}');
       } else {
         // Si hay docId, intentar actualizar
         final docRef = healthRef.doc(state.docId);
@@ -114,12 +107,10 @@ class HealthDbNotifier extends StateNotifier<HealthReport> {
         if (docSnapshot.exists) {
           // Actualizar documento existente
           await docRef.update(state.toMap());
-          print('Documento existente actualizado');
         } else {
           // Si el documento no existe, crear uno nuevo
           final newDocRef = await healthRef.add(state.toMap());
           state = state.copyWith(docId: newDocRef.id);
-          print('Documento no encontrado, creado nuevo con ID: ${newDocRef.id}');
         }
       }
     } catch (e) {
