@@ -24,6 +24,7 @@ Future<void> healthDataJson({
   // Agregar información del formulario
   data["FORMULARIO"] = {
     'FECHA': formatDate(healthReport.fecha),
+    'proyecto': healthReport.selectedValue,
     'userName': userValue?.fullName,
     'rol': userValue?.role,
     'cc': userValue?.cc,

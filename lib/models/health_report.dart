@@ -8,6 +8,7 @@ class HealthReport {
   final String fecha;
   final Map<String, Week> questions;
   final bool isOpen;
+  final String selectedValue;
 
   static const Map<String, String> questionsList = {
     'question1': 'Presenta una sintomatología específica - (Diagnostico emitido por médico).',
@@ -21,6 +22,7 @@ class HealthReport {
     required this.fecha,
     required this.questions,
     this.isOpen = true,
+    this.selectedValue = '',
   });
 
   HealthReport copyWith({
@@ -29,6 +31,7 @@ class HealthReport {
     String? fecha,
     Map<String, Week>? questions,
     bool? isOpen,
+    String? selectedValue,
   }) {
     return HealthReport(
       docId: docId ?? this.docId,
@@ -36,6 +39,7 @@ class HealthReport {
       fecha: fecha ?? this.fecha,
       questions: questions ?? this.questions,
       isOpen: isOpen ?? this.isOpen,
+      selectedValue: selectedValue ?? this.selectedValue,
     );
   }
 
@@ -47,6 +51,7 @@ class HealthReport {
         (key, value) => MapEntry(key, value.toMap()),
       ),
       'isOpen': isOpen,
+      'selectedValue': selectedValue,
     };
   }
 
@@ -61,6 +66,7 @@ class HealthReport {
             )
           : {},
       isOpen: map['isOpen'] ?? true,
+      selectedValue: map['selectedValue'] ?? '',
     );
   }
 

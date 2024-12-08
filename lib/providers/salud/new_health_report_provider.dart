@@ -16,6 +16,7 @@ class HealthReportNotifier extends StateNotifier<HealthReport> {
             .format(DateTime.now().toLocal()),
         questions: HealthReport.createEmptyQuestions(),
         isOpen: true,
+        selectedValue: '',
       ));
 
   void updateDayOfWeek(String questionId, String day, bool? value) {
@@ -39,6 +40,10 @@ class HealthReportNotifier extends StateNotifier<HealthReport> {
     }
   }
 
+  void updateSelectedValue(String newValue) {
+    state = state.copyWith(selectedValue: newValue);
+  }
+
   void reset() {
     state = HealthReport(
       userId: _auth.currentUser?.uid ?? '',
@@ -46,6 +51,7 @@ class HealthReportNotifier extends StateNotifier<HealthReport> {
           .format(DateTime.now().toLocal()),
       questions: HealthReport.createEmptyQuestions(),
       isOpen: true,
+      selectedValue: '',
     );
   }
 
@@ -55,6 +61,7 @@ class HealthReportNotifier extends StateNotifier<HealthReport> {
 
   Future<String?> saveHealthReport() async {
     try {
+      print('Guardando reporte de salud con selectedValue: ${state.selectedValue}');
       final docId = await _healthService.saveHealthReport(state);
       state = state.copyWith(docId: docId);
       return docId;

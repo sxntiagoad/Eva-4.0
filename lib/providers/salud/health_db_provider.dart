@@ -12,6 +12,7 @@ class HealthDbNotifier extends StateNotifier<HealthReport> {
           fecha: DateFormat('yyyy-MM-dd HH:mm:ss')
               .format(DateTime.now().toLocal()),
           questions: {},
+          selectedValue: '',
         ));
 
    Future<void> loadHealthReport(String docId) async {
@@ -75,6 +76,10 @@ class HealthDbNotifier extends StateNotifier<HealthReport> {
 
     updatedQuestions[questionId] = updatedWeek;
     state = state.copyWith(questions: updatedQuestions);
+  }
+
+  void updateSelectedValue(String newValue) {
+    state = state.copyWith(selectedValue: newValue);
   }
 
   void replaceHealth(HealthReport newHealth) {
