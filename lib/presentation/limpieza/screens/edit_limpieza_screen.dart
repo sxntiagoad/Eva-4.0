@@ -1,3 +1,4 @@
+import 'package:eva/presentation/limpieza/widgets/user_relevantes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +11,7 @@ import '../../../core/excel/limpieza_generator.dart';
 class EditLimpiezaScreen extends ConsumerStatefulWidget {
   final Limpieza limpieza;
   static const name = 'edit-limpieza-screen';
-  
+
   const EditLimpiezaScreen({
     required this.limpieza,
     super.key,
@@ -71,14 +72,20 @@ class _EditLimpiezaScreenState extends ConsumerState<EditLimpiezaScreen> {
                   onPressed: _isSaving
                       ? null
                       : () {
-                          ref.read(limpiezaDbProvider.notifier).updateIsOpen(!limpieza.isOpen);
+                          ref
+                              .read(limpiezaDbProvider.notifier)
+                              .updateIsOpen(!limpieza.isOpen);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                limpieza.isOpen ? 'Cerrando limpieza...' : 'Abriendo limpieza...',
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                limpieza.isOpen
+                                    ? 'Cerrando limpieza...'
+                                    : 'Abriendo limpieza...',
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              backgroundColor: !limpieza.isOpen ? Colors.green : Colors.red,
+                              backgroundColor:
+                                  !limpieza.isOpen ? Colors.green : Colors.red,
                             ),
                           );
                         },
@@ -98,25 +105,32 @@ class _EditLimpiezaScreenState extends ConsumerState<EditLimpiezaScreen> {
                           child: CarSelector(
                             selectedCarId: limpieza.carId,
                             onCarSelected: (carId) {
-                              ref.read(limpiezaDbProvider.notifier).updateCarId(carId);
+                              ref
+                                  .read(limpiezaDbProvider.notifier)
+                                  .updateCarId(carId);
                             },
                           ),
                         ),
                       ),
                     ),
                   ),
-                  
                   const SliverToBoxAdapter(
                     child: SizedBox(height: 16),
                   ),
-                  
+                  SliverToBoxAdapter(
+                    child: UserRelevantes(),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 16),
+                  ),
                   ListCategory(
                     inspecciones: limpieza.inspecciones,
-                    onUpdateInspeccion: (category, day, value) {
-                      ref.read(limpiezaDbProvider.notifier).updateInspeccion(category, day, value);
+                    onUpdateInspeccion: (category, day, value, userUid) {
+                      ref
+                          .read(limpiezaDbProvider.notifier)
+                          .updateInspeccion(category, day, value, userUid);
                     },
                   ),
-                  
                   const SliverToBoxAdapter(
                     child: SizedBox(height: 80),
                   ),
@@ -133,8 +147,10 @@ class _EditLimpiezaScreenState extends ConsumerState<EditLimpiezaScreen> {
                       : () async {
                           setState(() => _isSaving = true);
                           try {
-                            await ref.read(limpiezaDbProvider.notifier).updateLimpiezaInFirebase();
-                            
+                            await ref
+                                .read(limpiezaDbProvider.notifier)
+                                .updateLimpiezaInFirebase();
+
                             try {
                               await limpiezaDataJson(
                                 ref: ref,
@@ -145,7 +161,8 @@ class _EditLimpiezaScreenState extends ConsumerState<EditLimpiezaScreen> {
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Limpieza actualizada correctamente'),
+                                    content: Text(
+                                        'Limpieza actualizada correctamente'),
                                     backgroundColor: Colors.blue,
                                   ),
                                 );
@@ -156,8 +173,7 @@ class _EditLimpiezaScreenState extends ConsumerState<EditLimpiezaScreen> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      'La limpieza se actualizó pero hubo un error al actualizar el Excel: $excelError'
-                                    ),
+                                        'La limpieza se actualizó pero hubo un error al actualizar el Excel: $excelError'),
                                     backgroundColor: Colors.orange,
                                   ),
                                 );
@@ -178,8 +194,10 @@ class _EditLimpiezaScreenState extends ConsumerState<EditLimpiezaScreen> {
                           }
                         },
                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-                      if (states.contains(WidgetState.disabled)) return Colors.grey;
+                    backgroundColor:
+                        WidgetStateProperty.resolveWith<Color>((states) {
+                      if (states.contains(WidgetState.disabled))
+                        return Colors.grey;
                       return limpieza.isOpen ? Colors.green : Colors.red;
                     }),
                   ),
@@ -193,7 +211,9 @@ class _EditLimpiezaScreenState extends ConsumerState<EditLimpiezaScreen> {
                           ),
                         )
                       : Text(
-                          limpieza.isOpen ? 'Actualizar (Abierta)' : 'Actualizar (Cerrada)',
+                          limpieza.isOpen
+                              ? 'Actualizar (Abierta)'
+                              : 'Actualizar (Cerrada)',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

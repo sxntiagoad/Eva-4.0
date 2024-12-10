@@ -99,11 +99,12 @@ class _NewLimpiezaScreenState extends ConsumerState<NewLimpiezaScreen> {
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 16)),
                   ListCategory(
-                    onUpdateInspeccion: (category, day, value) {
+                    onUpdateInspeccion: (category, day, value, userId) {
                       ref.read(newLimpiezaProvider.notifier).updateDayOfWeek(
                             category,
                             day,
                             value,
+                            userId,
                           );
                     },
                   ),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/week.dart';
@@ -24,7 +25,7 @@ class ListCategory extends ConsumerWidget {
   };
 
   final Map<String, Week>? inspecciones;
-  final Function(String category, String day, bool? value)? onUpdateInspeccion;
+  final Function(String category, String day, bool? value, String uid)? onUpdateInspeccion;
 
   const ListCategory({
     super.key,
@@ -34,6 +35,13 @@ class ListCategory extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+
+    if (uid == null) {
+      return Text('No hay un usuario autenticado.');
+    }
+
     final inspeccionesData = inspecciones ?? ref.watch(newLimpiezaProvider).inspecciones;
 
     return SliverList(
@@ -54,13 +62,14 @@ class ListCategory extends ConsumerWidget {
                 final capitalizedDay = day[0].toUpperCase() + day.substring(1);
                 
                 if (onUpdateInspeccion != null) {
-                  onUpdateInspeccion!(category, capitalizedDay, value);
+                  onUpdateInspeccion!(category, capitalizedDay, value, uid);
                 } else {
                   // Si no hay callback externo, usar el provider directamente
                   ref.read(newLimpiezaProvider.notifier).updateDayOfWeek(
                     category,
                     capitalizedDay,
                     value,
+                    uid
                   );
                 }
               },

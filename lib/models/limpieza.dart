@@ -9,6 +9,8 @@ class Limpieza {
   final String userId;
   final Map<String, Week> inspecciones;
   final bool isOpen;
+  final Map<String, String> modifiedBy;
+  final List<String> relevantes;
 
   Limpieza({
     this.docId = '',
@@ -17,6 +19,8 @@ class Limpieza {
     required this.userId,
     required this.inspecciones,
     this.isOpen = true,
+    this.modifiedBy = const {},
+    this.relevantes = const [],
   });
 
   Limpieza copyWith({
@@ -26,12 +30,16 @@ class Limpieza {
     Map<String, Week>? inspecciones,
     String? docId,
     bool? isOpen,
+    Map<String, String>? modifiedBy,
+    List<String>? relevantes,
   }) {
     return Limpieza(
       carId: carId ?? this.carId,
       fecha: fecha ?? this.fecha,
       userId: userId ?? this.userId,
       inspecciones: inspecciones ?? this.inspecciones,
+      modifiedBy: modifiedBy ?? this.modifiedBy,
+      relevantes: relevantes ?? this.relevantes,
       docId: docId ?? this.docId,
       isOpen: isOpen ?? this.isOpen,
     );
@@ -46,6 +54,8 @@ class Limpieza {
         (key, value) => MapEntry(key, value.toMap()),
       ),
       'isOpen': isOpen,
+      'modifiedBy': modifiedBy,
+      'relevantes': relevantes,
     };
   }
 
@@ -61,6 +71,8 @@ class Limpieza {
             )
           : {},
       isOpen: map['isOpen'] ?? true,
+      modifiedBy: Map<String, String>.from(map['modifiedBy'] ?? {}),
+      relevantes: List<String>.from(map['relevantes'] ?? []),
     );
   }
 
@@ -83,6 +95,8 @@ class Limpieza {
         other.carId == carId &&
         other.fecha == fecha &&
         other.userId == userId &&
+        other.modifiedBy == modifiedBy &&
+        other.relevantes == relevantes &&
         mapEquals(other.inspecciones, inspecciones);
   }
 
@@ -92,6 +106,8 @@ class Limpieza {
         carId.hashCode ^
         fecha.hashCode ^
         userId.hashCode ^
+        modifiedBy.hashCode ^
+        relevantes.hashCode ^
         inspecciones.hashCode;
   }
 }

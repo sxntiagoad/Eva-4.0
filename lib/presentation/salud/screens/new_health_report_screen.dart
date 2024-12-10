@@ -165,7 +165,7 @@ class _NewHealthReportScreenState extends ConsumerState<NewHealthReportScreen> {
                                 ),
                               ),
                               const SizedBox(width: 8),
-                              const Text('No'),
+                              const Text('Si'),
                               const SizedBox(width: 16),
                               Container(
                                 width: 24,
@@ -176,7 +176,7 @@ class _NewHealthReportScreenState extends ConsumerState<NewHealthReportScreen> {
                                 ),
                               ),
                               const SizedBox(width: 8),
-                              const Text('Si'),
+                              const Text('No'),
                             ],
                           ),
                           const SizedBox(height: 16),

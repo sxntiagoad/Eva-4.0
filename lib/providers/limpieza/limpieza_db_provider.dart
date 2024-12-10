@@ -15,6 +15,8 @@ class LimpiezaDbNotifier extends StateNotifier<Limpieza> {
           isOpen: true,
           docId: '',
           userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+          modifiedBy: {},
+          relevantes: [],
         ));
 
   void updateCarId(String newCarId) {
@@ -37,7 +39,8 @@ class LimpiezaDbNotifier extends StateNotifier<Limpieza> {
     state = state.copyWith(inspecciones: newInspecciones);
   }
 
-  void updateInspeccion(String category, String day, bool? value) {
+  void updateInspeccion(
+      String category, String day, bool? value, String userId) {
     final updatedInspecciones = Map<String, Week>.from(state.inspecciones);
 
     if (!updatedInspecciones.containsKey(category)) {
@@ -73,8 +76,25 @@ class LimpiezaDbNotifier extends StateNotifier<Limpieza> {
         return;
     }
 
+    // Actualizar el mapa modifiedBy en el nivel del documento
+    final updatedModifiedBy = Map<String, String>.from(state.modifiedBy);
+    updatedModifiedBy[day] = userId;
+
     updatedInspecciones[category] = updatedWeek;
-    state = state.copyWith(inspecciones: updatedInspecciones);
+    state = state.copyWith(
+        inspecciones: updatedInspecciones, modifiedBy: updatedModifiedBy);
+  }
+
+  void updateRelevantes(List<String> newRelevantes) {
+    state = state.copyWith(relevantes: newRelevantes);
+  }
+
+  void addRelevante(String userId) {
+    final updatedRelevantes = List<String>.from(state.relevantes);
+    if (!updatedRelevantes.contains(userId)) {
+      updatedRelevantes.add(userId);
+      state = state.copyWith(relevantes: updatedRelevantes);
+    }
   }
 
   void replaceLimpieza(Limpieza newLimpieza) {
@@ -84,7 +104,9 @@ class LimpiezaDbNotifier extends StateNotifier<Limpieza> {
     print('Fecha: ${newLimpieza.fecha}');
     print('IsOpen: ${newLimpieza.isOpen}');
     print('Inspecciones: ${newLimpieza.inspecciones}');
-    
+    print('ModifiedBy: ${newLimpieza.modifiedBy}');
+    print('Relevantes: ${newLimpieza.relevantes}');
+
     state = newLimpieza;
   }
 
@@ -105,7 +127,7 @@ class LimpiezaDbNotifier extends StateNotifier<Limpieza> {
       } else {
         // Si hay docId, intentar actualizar
         final docRef = limpiezasRef.doc(state.docId);
-        
+
         // Verificar si el documento existe
         final docSnapshot = await docRef.get();
         if (docSnapshot.exists) {
@@ -116,7 +138,8 @@ class LimpiezaDbNotifier extends StateNotifier<Limpieza> {
           // Si el documento no existe, crear uno nuevo
           final newDocRef = await limpiezasRef.add(state.toMap());
           state = state.copyWith(docId: newDocRef.id);
-          print('Documento no encontrado, creado nuevo con ID: ${newDocRef.id}');
+          print(
+              'Documento no encontrado, creado nuevo con ID: ${newDocRef.id}');
         }
       }
     } catch (e) {

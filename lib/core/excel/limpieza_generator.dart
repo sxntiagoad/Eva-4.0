@@ -11,13 +11,19 @@ Future<void> limpiezaDataJson(
     required Limpieza limpieza,
     String idDoc = ''}) async {
   Map<String, dynamic> data = {};
-  
+
   // Creamos un map temporal para las inspecciones
   Map<String, dynamic> inspeccionesMap = {};
   limpieza.inspecciones.forEach((key, value) {
     inspeccionesMap[key] = value.toMap();
   });
-  
+
+  Map<String, String> firmasRelevantes = {};
+  for (String uid in limpieza.relevantes) {
+    String firma = await getUserSignatureUrl(uid);
+    firmasRelevantes['FIRMA_USER_$uid'] = firma;
+  }
+
   // Agregamos las inspecciones bajo una key
   data["INSPECCION"] = inspeccionesMap;
   final cars = await getAllCars();
@@ -41,14 +47,15 @@ Future<void> limpiezaDataJson(
     }
   }
   data['IMAGENES'] = {
+    "MODIFICADO_POR": limpieza.modifiedBy,
     'FIRMA_USER': firmaUrl,
     'LOGO': logoUrl,
+    'FIRMAS_RELV': firmasRelevantes
   };
 
-
-  await enviarAFirebaseLimpieza(jsonData: data, archiveName: limpieza.docId, isPo: false);
-}    
-
+  await enviarAFirebaseLimpieza(
+      jsonData: data, archiveName: limpieza.docId, isPo: false);
+}
 
 Future<String> getSESCOTURImageUrl() async {
   try {
@@ -62,16 +69,16 @@ Future<String> getSESCOTURImageUrl() async {
   }
 }
 
-
 Future<String> getUserSignatureUrl(String uid) async {
   try {
-    return await FirebaseStorage.instance.ref('firmas/$uid.png').getDownloadURL();
+    return await FirebaseStorage.instance
+        .ref('firmas/$uid.png')
+        .getDownloadURL();
   } catch (e) {
     // ignore: avoid_print
     return '';
   }
 }
-
 
 String formatDate(String? fecha) {
   if (fecha == null || fecha.isEmpty) return 'Sin fecha';

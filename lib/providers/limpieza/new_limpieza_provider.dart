@@ -16,14 +16,18 @@ class LimpiezaNotifier extends StateNotifier<Limpieza> {
         fecha: DateFormat('yyyy-MM-dd HH:mm:ss')
             .format(DateTime.now().toLocal()),
         userId: FirebaseAuth.instance.currentUser?.uid ?? '',
-        inspecciones: formatInspeccionesLimpieza()
+        inspecciones: formatInspeccionesLimpieza(),
+        modifiedBy: {},
+        relevantes: [FirebaseAuth.instance.currentUser?.uid ?? '']
+              .where((uid) => uid.isNotEmpty)
+              .toList(),
       ));
 
   void updateCarId(String newCarId) {
     state = state.copyWith(carId: newCarId);
   }
 
-  void updateDayOfWeek(String category, String day, bool? value) {
+  void updateDayOfWeek(String category, String day, bool? value, String userId) {
     final updatedInspecciones = Map<String, Week>.from(state.inspecciones);
     
     if (updatedInspecciones.containsKey(category)) {
@@ -40,7 +44,25 @@ class LimpiezaNotifier extends StateNotifier<Limpieza> {
       );
 
       updatedInspecciones[category] = updatedWeek;
-      state = state.copyWith(inspecciones: updatedInspecciones);
+
+      // Actualizar el mapa modifiedBy en el nivel del documento
+        final updatedModifiedBy = Map<String, String>.from(state.modifiedBy);
+        updatedModifiedBy[day] = userId;
+
+      state = state.copyWith(inspecciones: updatedInspecciones,
+      modifiedBy: updatedModifiedBy,);
+    }
+  }
+
+  void updateRelevantes(List<String> newRelevantes) {
+    state = state.copyWith(relevantes: newRelevantes);
+  }
+
+  void addRelevante(String userId) {
+    final updatedRelevantes = List<String>.from(state.relevantes);
+    if (!updatedRelevantes.contains(userId)) {
+      updatedRelevantes.add(userId);
+      state = state.copyWith(relevantes: updatedRelevantes);
     }
   }
 
