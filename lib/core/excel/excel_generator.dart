@@ -17,6 +17,7 @@ Future<void> dataJson(
     data[key] = value.map((innerKey, week) => MapEntry(innerKey, week.toMap()));
   });
 
+
   final cars = await getAllCars();
   final currentCar = cars[preoperacional.carId];
 
@@ -57,17 +58,16 @@ Future<void> dataJson(
     firmasRelevantes['FIRMA_USER_$uid'] = firma;
   }
 
-
   final firmaUrl = await getUserSignatureUrl(preoperacional.userId);
- 
+
   data['IMAGENES'] = {
     'FIRMA_USER': firmaUrl,
     'FIRMA_ENCARGADO': firmaEncargadoUrl,
     'LOGO': logoUrl,
     'FIRMA_REP': firmaUrl,
-    'FIRMAS_RELV':firmasRelevantes, // Agregar todas las firmas relevantes al mapa
+    'FIRMAS_RELV':
+        firmasRelevantes, // Agregar todas las firmas relevantes al mapa
   };
-
 
   data["PIE_TABLA"] = {
     "Nombre del Conductor": user.value?.fullName ?? '',

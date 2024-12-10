@@ -78,7 +78,7 @@ Map<String, Map<String, Week>> formatInspecciones() => {
         'Linterna': Week(),
         'Llanta de Repuesto': Week(),
         'Botiquin de Primeros Auxilios': Week(),
-        'Extintor / 20 lbs / 30 Ibs': Week(),
+        'Extintor/20lbs/30lbs': Week(),
         'Tacos': Week(),
         'Otros': Week(),
       },
