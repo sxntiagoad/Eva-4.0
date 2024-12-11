@@ -34,7 +34,7 @@ Future<void> dataJson(
     "F.V . TARJETA OPERACIÓN": fecha(currentCar?.tarjetaOp),
     "F.V . SOAT": fecha(currentCar?.soat),
     "F.V . TECNICOMECANICA": fecha(currentCar?.tecnicoMec),
-    "F.V . EXTRACTO": fecha(currentCar?.extracto),
+    "F.V . EXTRACTO": fecha(preoperacional.extracto),
     "BOTIQUÍN TIPO": preoperacional.typeKit,
     "SEMANA DEL": formatDate(preoperacional.fechaInit),
     "AL": formatDate(preoperacional.fechaFinal),
