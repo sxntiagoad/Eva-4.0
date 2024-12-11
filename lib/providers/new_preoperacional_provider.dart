@@ -1,6 +1,7 @@
 import 'package:eva/models/format_inspecciones.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Añade esta importación
+import 'package:cloud_firestore/cloud_firestore.dart'; // Asegúrate de importar esto
 
 import '../models/preoperacional.dart';
 import '../models/week.dart';
@@ -25,6 +26,7 @@ class PreoperacionalNotifier extends StateNotifier<Preoperacional> {
               .toList(),
           ultimoCambioAceite: 0,
           proximoCambioAceite: 0,
+          extracto: null,
         ));
 
   void updateCarId(String newCarId) {
@@ -156,6 +158,10 @@ class PreoperacionalNotifier extends StateNotifier<Preoperacional> {
         state = state.copyWith(relevantes: updatedRelevantes);
       }
     }
+  }
+
+  void updateExtracto(Timestamp newExtracto) {
+    state = state.copyWith(extracto: newExtracto);
   }
 }
 

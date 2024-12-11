@@ -24,6 +24,7 @@ class PreoperacionalDbNotifier extends StateNotifier<Preoperacional> {
           relevantes: [],
           ultimoCambioAceite: 0,
           proximoCambioAceite: 0,
+          extracto: null,
         ));
 
   // Actualiza el carId
@@ -121,6 +122,9 @@ class PreoperacionalDbNotifier extends StateNotifier<Preoperacional> {
     if (!isOpen && state.fechaFinal.isEmpty) {
       state = state.copyWith(fechaFinal: now);
     }
+  }
+  void updateExtracto(Timestamp newExtracto) {
+    state = state.copyWith(extracto: newExtracto);
   }
 
   // Actualiza el día de la semana

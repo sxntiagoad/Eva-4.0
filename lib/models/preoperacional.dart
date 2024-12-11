@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'week.dart';
 
@@ -20,6 +21,7 @@ class Preoperacional {
   final List<String> relevantes;
   final int ultimoCambioAceite;
   final int proximoCambioAceite;
+  final Timestamp? extracto;
 
   Preoperacional({
     this.docId = '',
@@ -38,6 +40,7 @@ class Preoperacional {
     this.relevantes = const [],
     this.ultimoCambioAceite = 0,
     this.proximoCambioAceite = 0,
+    this.extracto,
   });
 
   Preoperacional copyWith({
@@ -57,6 +60,7 @@ class Preoperacional {
     List<String>? relevantes,
     int? ultimoCambioAceite,
     int? proximoCambioAceite,
+    Timestamp? extracto,
   }) {
     return Preoperacional(
       carId: carId ?? this.carId,
@@ -75,6 +79,7 @@ class Preoperacional {
       relevantes: relevantes ?? this.relevantes,
       ultimoCambioAceite: ultimoCambioAceite ?? this.ultimoCambioAceite,
       proximoCambioAceite: proximoCambioAceite ?? this.proximoCambioAceite,
+      extracto: extracto ?? this.extracto,
     );
   }
 
@@ -105,6 +110,7 @@ class Preoperacional {
       'relevantes': relevantes,
       'ultimoCambioAceite': ultimoCambioAceite,
       'proximoCambioAceite': proximoCambioAceite,
+      'extracto': extracto,
     };
   }
 
@@ -132,6 +138,7 @@ class Preoperacional {
       relevantes: List<String>.from(map['relevantes'] ?? []),
       ultimoCambioAceite: map['ultimoCambioAceite']?.toInt() ?? 0,
       proximoCambioAceite: map['proximoCambioAceite']?.toInt() ?? 0,
+      extracto: map['extracto'] != null ? Timestamp.fromMillisecondsSinceEpoch(map['extracto'].millisecondsSinceEpoch) : null,
     );
   }
 
@@ -164,7 +171,8 @@ class Preoperacional {
         other.modifiedBy == modifiedBy &&
         other.relevantes == relevantes &&
         other.ultimoCambioAceite == ultimoCambioAceite &&
-        other.proximoCambioAceite == proximoCambioAceite;
+        other.proximoCambioAceite == proximoCambioAceite &&
+        other.extracto == extracto;
   }
 
   @override
@@ -183,6 +191,7 @@ class Preoperacional {
         modifiedBy.hashCode ^
         relevantes.hashCode ^
         ultimoCambioAceite.hashCode ^
-        proximoCambioAceite.hashCode;
+        proximoCambioAceite.hashCode ^
+        extracto.hashCode;
   }
 }

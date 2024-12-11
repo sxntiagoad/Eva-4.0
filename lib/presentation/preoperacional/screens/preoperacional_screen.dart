@@ -1,3 +1,4 @@
+import 'package:eva/presentation/new_preoperacional/widgets/date_field.dart';
 import 'package:eva/presentation/preoperacional/widgets/aceite_db_widget.dart';
 import 'package:eva/presentation/preoperacional/widgets/inspeccion_db/list_category_db.dart';
 import 'package:eva/presentation/preoperacional/widgets/kilometraje_db.dart';
@@ -15,6 +16,7 @@ import '../../../providers/preoperacional_db_provider.dart';
 import '../widgets/car_plate_db.dart';
 
 import '../widgets/type_kid_db.dart';
+import 'package:eva/presentation/preoperacional/widgets/preoperacional_date_field.dart';
 
 class PreoperacionalScreen extends ConsumerStatefulWidget {
   final Preoperacional preoperacional;
@@ -55,6 +57,7 @@ class _PreoperacionalScreenState extends ConsumerState<PreoperacionalScreen> {
   Widget build(BuildContext context) {
     final isOpen = ref.watch(isOpenProvider);
     final usuariosFiltrados = ref.watch(userFilteredProvider);
+    final preoperacional = ref.watch(preoperacionalDbProvider);
 
     return PopScope(
       canPop: !_isSaving,
@@ -118,23 +121,30 @@ class _PreoperacionalScreenState extends ConsumerState<PreoperacionalScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView(
-                        children: const [
-                          SizedBox(height: 10),
-                          UserSearchWidget(),
-                          SizedBox(height: 10),
-                          CarPlateDb(),
-                          SizedBox(height: 15),
-                          TypeKidDbWidget(),
-                          SizedBox(height: 10),
-                          KilometrajeDbWidget(),
-                          SizedBox(height: 10),
-                          AceiteDbWidget(),
-                          Divider(),
-                          ListCategoryDb(),
-                          SizedBox(height: 100),
-                          Divider(),
-                          ObservacionesDbWidget(),
-                          SizedBox(height: 80),
+                        children: [
+                          const SizedBox(height: 10),
+                          
+                          const SizedBox(height: 10),
+                          const UserSearchWidget(),
+                          const SizedBox(height: 10),
+                          const CarPlateDb(),
+                          const SizedBox(height: 15),
+                          const TypeKidDbWidget(),
+                          const SizedBox(height: 10),
+                          const KilometrajeDbWidget(),
+                          const SizedBox(height: 10),
+                          const AceiteDbWidget(),
+                          const SizedBox(height: 10),
+                          PreoperacionalDateField(
+                            label: 'Extracto',
+                            icon: Icons.date_range,
+                          ),
+                          const Divider(),
+                          const ListCategoryDb(),
+                          const SizedBox(height: 100),
+                          const Divider(),
+                          const ObservacionesDbWidget(),
+                          const SizedBox(height: 80),
                         ],
                       ),
                     ),

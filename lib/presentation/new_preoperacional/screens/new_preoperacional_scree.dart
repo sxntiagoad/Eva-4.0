@@ -9,6 +9,7 @@ import '../widgets/inspecciones/list_category.dart';
 import '../widgets/save_widget.dart';
 import '../widgets/type_kid_widget.dart';
 import '../widgets/aceite_widget.dart';
+import '../widgets/date_field.dart';
 
 class NewPreoperacionalScree extends ConsumerStatefulWidget {
   static const name = 'new-preoperacional-screen';
@@ -90,19 +91,24 @@ class _NewPreoperacionalScreeState extends ConsumerState<NewPreoperacionalScree>
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView(
-                        children: const [
-                          SizedBox(height: 10),
+                        children: [
+                          const SizedBox(height: 10),
                           CarPlate(),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TypeKidWidget(),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           KilometrajeWidget(),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           AceiteWidget(),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
+                          DateField(
+                            label: 'Extracto',
+                            icon: Icons.date_range,
+                          ),
+                          const SizedBox(height: 10),
                           ListCategory(),
-                          ObservacionesWidget(),
-                          SizedBox(height: 80),
+                          const SizedBox(height: 10),
+                          
                         ],
                       ),
                     ),
