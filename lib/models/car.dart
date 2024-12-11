@@ -7,7 +7,6 @@ class Car {
   final String carPlate;
   final String carType;
   final String model;
-  final Timestamp? extracto;
   final Timestamp? soat;
   final Timestamp? tarjetaOp;
   final Timestamp? tecnicoMec;
@@ -17,7 +16,6 @@ class Car {
     required this.carPlate,
     required this.carType,
     required this.model,
-    this.extracto,
     this.soat,
     this.tarjetaOp,
     this.tecnicoMec,
@@ -30,8 +28,6 @@ class Car {
         carPlate: map['carPlate'] ?? '',
         carType: map['carType'] ?? '',
         model: map['model'] ?? '',
-        extracto:
-            map['extracto'] is Timestamp ? map['extracto'] as Timestamp : null,
         soat: map['soat'] is Timestamp ? map['soat'] as Timestamp : null,
         tarjetaOp: map['tarjetaOp'] is Timestamp
             ? map['tarjetaOp'] as Timestamp
@@ -53,7 +49,6 @@ class Car {
       'carPlate': carPlate,
       'carType': carType,
       'model': model,
-      'extracto': extracto,
       'soat': soat,
       'tarjetaOp': tarjetaOp,
       'tecnicoMec': tecnicoMec,
@@ -65,7 +60,6 @@ class Car {
     String? carPlate,
     String? carType,
     String? model,
-    Timestamp? extracto,
     Timestamp? soat,
     Timestamp? tarjetaOp,
     Timestamp? tecnicoMec,
@@ -75,7 +69,6 @@ class Car {
       carPlate: carPlate ?? this.carPlate,
       carType: carType ?? this.carType,
       model: model ?? this.model,
-      extracto: extracto ?? this.extracto,
       soat: soat ?? this.soat,
       tarjetaOp: tarjetaOp ?? this.tarjetaOp,
       tecnicoMec: tecnicoMec ?? this.tecnicoMec,
@@ -88,7 +81,7 @@ class Car {
 
   @override
   String toString() {
-    return 'Car(brand: $brand, carPlate: $carPlate, carType: $carType, model: $model, extracto: $extracto, soat: $soat, tarjetaOp: $tarjetaOp, tecnicoMec: $tecnicoMec)';
+    return 'Car(brand: $brand, carPlate: $carPlate, carType: $carType, model: $model, soat: $soat, tarjetaOp: $tarjetaOp, tecnicoMec: $tecnicoMec)';
   }
 
   @override
@@ -100,7 +93,6 @@ class Car {
         other.carPlate == carPlate &&
         other.carType == carType &&
         other.model == model &&
-        other.extracto == extracto &&
         other.soat == soat &&
         other.tarjetaOp == tarjetaOp &&
         other.tecnicoMec == tecnicoMec;
@@ -112,7 +104,6 @@ class Car {
         carPlate.hashCode ^
         carType.hashCode ^
         model.hashCode ^
-        extracto.hashCode ^
         soat.hashCode ^
         tarjetaOp.hashCode ^
         tecnicoMec.hashCode;

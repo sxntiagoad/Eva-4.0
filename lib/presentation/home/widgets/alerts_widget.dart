@@ -29,7 +29,6 @@ class AlertsWidget extends ConsumerWidget {
           _checkDocument('SOAT', data['soat'] as Timestamp?, doc.id, carPlate, alerts);
           _checkDocument('Tecnicomecánica', data['tecnicoMec'] as Timestamp?, doc.id, carPlate, alerts);
           _checkDocument('Tarjeta de Operación', data['tarjetaOp'] as Timestamp?, doc.id, carPlate, alerts);
-          _checkDocument('Extracto', data['extracto'] as Timestamp?, doc.id, carPlate, alerts);
         }
 
         // Ordenar por días restantes (más urgentes primero)

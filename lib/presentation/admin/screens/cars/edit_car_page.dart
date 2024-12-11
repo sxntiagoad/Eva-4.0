@@ -142,7 +142,6 @@ class _EditCarPageState extends ConsumerState<EditCarPage> {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 16),
-                      _buildDateButton('extracto', 'Extracto', Icons.description, carAsyncValue.extracto),
                       _buildDateButton('soat', 'SOAT', Icons.security, carAsyncValue.soat),
                       _buildDateButton('tarjetaOp', 'Tarjeta de Operación', Icons.credit_card, carAsyncValue.tarjetaOp),
                       _buildDateButton('tecnicoMec', 'Técnico Mecánica', Icons.build, carAsyncValue.tecnicoMec),

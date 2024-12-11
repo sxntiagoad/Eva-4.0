@@ -39,7 +39,6 @@ class SelectedCarNotifier extends StateNotifier<Car?> {
     if (state == null) return;
 
     state = state!.copyWith(
-      extracto: field == 'extracto' ? value : state!.extracto,
       soat: field == 'soat' ? value : state!.soat,
       tarjetaOp: field == 'tarjetaOp' ? value : state!.tarjetaOp,
       tecnicoMec: field == 'tecnicoMec' ? value : state!.tecnicoMec,

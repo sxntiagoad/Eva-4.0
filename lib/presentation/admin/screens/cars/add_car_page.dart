@@ -18,7 +18,6 @@ class _AddCarPageState extends ConsumerState<AddCarPage> {
   void initState() {
     super.initState();
     newCar = Car(
-      extracto: null,
       soat: null,
       tarjetaOp: null,
       tecnicoMec: null,
@@ -98,12 +97,7 @@ class _AddCarPageState extends ConsumerState<AddCarPage> {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 16),
-                      _buildDateButton(
-                        icon: Icons.description,
-                        label: 'Extracto',
-                        date: newCar.extracto,
-                        onPressed: () => _selectDate(context, 'extracto'),
-                      ),
+
                       _buildDateButton(
                         icon: Icons.security,
                         label: 'SOAT',
@@ -180,9 +174,6 @@ class _AddCarPageState extends ConsumerState<AddCarPage> {
     if (picked != null) {
       setState(() {
         switch (field) {
-          case 'extracto':
-            newCar = newCar.copyWith(extracto: Timestamp.fromDate(picked));
-            break;
           case 'soat':
             newCar = newCar.copyWith(soat: Timestamp.fromDate(picked));
             break;
