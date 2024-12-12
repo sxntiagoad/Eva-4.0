@@ -93,7 +93,7 @@ String fecha(Timestamp? fecha) {
     String hour = dateTime.hour.toString().padLeft(2, '0');
     String minute = dateTime.minute.toString().padLeft(2, '0');
 
-    String formattedDate = '$year-$month-$day $hour:$minute';
+    String formattedDate = '$year-$month-$day';
     return formattedDate;
   }
   return 'Sin fecha';
@@ -108,7 +108,7 @@ String formatDate(String? fecha) {
     String hora = dateTime.hour.toString().padLeft(2, '0');
     String minutos = dateTime.minute.toString().padLeft(2, '0');
 
-    return '$dia/$mes $hora:$minutos';
+    return '$dia/$mes';
   } catch (e) {
     return 'Fecha inválida';
   }
